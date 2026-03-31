@@ -151,3 +151,28 @@ select * from usuarios;
 INSERT INTO usuarios (nome, email, senha, tipo_perfil) VALUES 
 ('João Silva', 'joao2@email.com', '123456', 'CLIENTE'),
 ('Maria Souza', 'maria@email.com', '123456', 'MAKER');
+
+
+--FABRICANTE 
+
+ALTER TABLE usuarios
+ADD COLUMN status_fabricante ENUM('NAO_SOLICITADO', 'PENDENTE', 'APROVADO', 'REJEITADO') DEFAULT 'NAO_SOLICITADO';
+
+CREATE TABLE fabricantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    cnpj VARCHAR(20),
+    telefone_comercial VARCHAR(20),
+    endereco_empresa TEXT,
+    data_aprovacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
+SELECT u.id, u.nome, u.email, f.cnpj, f.telefone_comercial, f.endereco_empresa
+FROM usuarios u
+JOIN fabricantes f ON u.id = f.usuario_id
+WHERE u.status_fabricante = 'APROVADO';
+
+SELECT id, nome, email
+FROM usuarios
+WHERE status_fabricante = 'PENDENTE';
