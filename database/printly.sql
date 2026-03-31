@@ -152,8 +152,7 @@ INSERT INTO usuarios (nome, email, senha, tipo_perfil) VALUES
 ('João Silva', 'joao2@email.com', '123456', 'CLIENTE'),
 ('Maria Souza', 'maria@email.com', '123456', 'MAKER');
 
-
---FABRICANTE 
+--FABRICANTE NOVA INSERÇÃO
 
 ALTER TABLE usuarios
 ADD COLUMN status_fabricante ENUM('NAO_SOLICITADO', 'PENDENTE', 'APROVADO', 'REJEITADO') DEFAULT 'NAO_SOLICITADO';
@@ -176,3 +175,25 @@ WHERE u.status_fabricante = 'APROVADO';
 SELECT id, nome, email
 FROM usuarios
 WHERE status_fabricante = 'PENDENTE';
+
+INSERT INTO fabricantes (usuario_id, cnpj, telefone_comercial, endereco_empresa)
+VALUES 
+(2, '12.345.678/0001-90', '(41) 99999-0001', 'Rua das Impressoras, 123, Curitiba, PR');
+
+INSERT INTO usuarios (nome, email, senha, tipo_perfil)
+VALUES ('Carlos Pereira', 'carlos@email.com', '123456', 'MAKER');
+
+
+INSERT INTO fabricantes (usuario_id, cnpj, telefone_comercial, endereco_empresa)
+VALUES 
+(3, '23.456.789/0001-55', '(41) 97777-0003', 'Rua dos Criadores, 789, Curitiba, PR');
+
+
+--ADMINISTRADOR NOVA INSERÇÃO
+INSERT INTO usuarios (nome, email, senha, tipo_perfil, status, telefone, cep, cidade, estado, endereco)
+VALUES 
+('Carlos Pereira', 'carlos.admin@email.com', '123456', 'ADMIN', 'ATIVO', '(41) 98888-0000', '80000-000', 'Curitiba', 'PR', 'Rua do Administrador, 100');
+
+INSERT INTO usuarios (nome, email, senha, tipo_perfil, status, telefone, cep, cidade, estado, endereco)
+VALUES 
+('Ana Martins', 'ana.admin@email.com', '123456', 'ADMIN', 'ATIVO', '(41) 97777-1111', '80010-000', 'Curitiba', 'PR', 'Avenida Central, 200');
