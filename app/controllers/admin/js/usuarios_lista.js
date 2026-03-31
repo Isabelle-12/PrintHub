@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function buscar() {
-    const retorno = await fetch("../controllers/admin/usuario_get.php");
+    const retorno = await fetch("../app/controllers/admin/usuario_get.php");
     const resposta = await retorno.json();
 
     if (resposta.status === "ok") {
