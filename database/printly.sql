@@ -1,5 +1,9 @@
--- Criação do Banco de Dados
 CREATE DATABASE printly_db;
+
+CREATE USER 'printly_user'@'localhost' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON printly_db.* TO 'printly_user'@'localhost';
+FLUSH PRIVILEGES;
+
 USE printly_db;
 
 -- 1. TABELA DE USUÁRIOS (Unificando os perfis Cliente, Maker e Admin)
@@ -141,3 +145,9 @@ CREATE TABLE notificacoes (
 -- 11. CAMPO DE PRAZO NOS PEDIDOS (necessário para controle de tempo)
 ALTER TABLE pedidos
     ADD COLUMN prazo_pedido DATETIME NULL DEFAULT NULL;
+    
+select * from usuarios;
+
+INSERT INTO usuarios (nome, email, senha, tipo_perfil) VALUES 
+('João Silva', 'joao2@email.com', '123456', 'CLIENTE'),
+('Maria Souza', 'maria@email.com', '123456', 'MAKER');
