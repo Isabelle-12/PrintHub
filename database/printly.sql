@@ -197,3 +197,19 @@ VALUES
 INSERT INTO usuarios (nome, email, senha, tipo_perfil, status, telefone, cep, cidade, estado, endereco)
 VALUES 
 ('Ana Martins', 'ana.admin@email.com', '123456', 'ADMIN', 'ATIVO', '(41) 97777-1111', '80010-000', 'Curitiba', 'PR', 'Avenida Central, 200');
+
+--inserts testes para a validacao de maker
+
+INSERT INTO usuarios (nome, email, senha, tipo_perfil, status_fabricante, cidade, estado)
+VALUES ('Bruno Maker Teste', 'bruno.maker@teste.com', '123456', 'MAKER', 'PENDENTE', 'Curitiba', 'PR');
+
+INSERT INTO fabricantes (usuario_id, cnpj, telefone_comercial, endereco_empresa)
+VALUES (LAST_INSERT_ID(), '99.999.999/0001-99', '(41) 98888-7777', 'Rua de Teste, 500, Umbará, Curitiba - PR');
+
+-- Adiciona uma impressora para o Maker
+INSERT INTO impressoras (maker_id, modelo, volume_maximo_cm3, status)
+VALUES ((SELECT id FROM usuarios WHERE email = 'bruno.maker@teste.com'), 'Ender 3 S1', 8000.00, 'DISPONIVEL');
+
+-- Adiciona um material para o Maker
+INSERT INTO materiais_maker (maker_id, tipo_material, preco_por_grama)
+VALUES ((SELECT id FROM usuarios WHERE email = 'bruno.maker@teste.com'), 'PLA Premium', 0.15);
