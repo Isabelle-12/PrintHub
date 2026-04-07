@@ -1,0 +1,51 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const btnEnviar = document.getElementById("enviar");
+    
+    btnEnviar.addEventListener("click", async (e) => {
+        e.preventDefault(); // Impede o recarregamento da página
+
+        // Captura de todos os campos
+        const dados = {
+            nome: document.getElementById("nome").value,
+            email: document.getElementById("email").value,
+            senha: document.getElementById("senha").value,
+            telefone: document.getElementById("telefone").value,
+            documento: document.getElementById("documento").value,
+            cep: document.getElementById("cep").value,
+            cidade: document.getElementById("cidade").value,
+            estado: document.getElementById("estado").value,
+            endereco: document.getElementById("endereco").value,
+            perfil: 'CLIENTE' // Definido fixo para este formulário
+        };
+
+        if(!dados.nome || !dados.email || !dados.senha){
+            alert("Por favor, preencha os campos obrigatórios (Nome, E-mail e Senha).");
+            return;
+        }
+
+        const fd = new FormData();
+        // Loop para preencher o FormData automaticamente
+        for (const chave in dados) {
+            fd.append(chave, dados[chave]);
+        }
+
+        try {
+            const retorno = await fetch("../controllers/usuario/php/cadastro.php", {
+                method: "POST",
+                body: fd
+            });
+
+            const resposta = await retorno.json();
+
+            if(resposta.status === "ok"){
+                alert(resposta.mensagem);
+                window.location.href = "login.html";
+            } else {
+                alert("Erro: " + resposta.mensagem);
+            }
+        } catch (error) {
+            console.error("Erro no cadastro:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
+    });
+});
