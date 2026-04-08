@@ -16,7 +16,7 @@ async function login(){
     fd.append("senha", senha);
 
     try {
-        const retorno = await fetch("../../app/controllers/usuario/php/login.php", {
+        const retorno = await fetch("../app/controllers/usuario/php/login.php", {
             method: "POST",
             body: fd
         });
@@ -38,7 +38,7 @@ async function login(){
 }
 
  async function conta_red() {
-    const resposta= await fetch("/config/tipagem.php");
+    const resposta= await fetch("../app/controllers/usuario/php/tipagem.php");
     const resp =  await resposta.json();
     const tipagem = resp.tipos;
 
