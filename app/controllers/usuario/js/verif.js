@@ -5,9 +5,20 @@ async function verif() {
     if (!dados.logado) {
         alert("Você precisa estar logado!");
         window.location.href = "index.php?rota=login";
-    } else {
-        console.log("Usuário logado:", dados.email);
     }
+
+
+    const acesso = document.body.getAttribute("data-acesso");
+    
+    if (acesso && !acesso.split(",").includes(dados.tipos)) {
+        alert("Você não tem permissão para acessar esta página.");
+        window.location.href = "index.php?rota=home";
+        return;
+    }
+    
+
+    
+    console.log("Usuário logado:", dados.email);
 }
 
 // nao sei se deixo no dom ja que nao está no header, mas deixarei
