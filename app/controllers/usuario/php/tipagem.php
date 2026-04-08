@@ -1,5 +1,6 @@
 <?php
 session_start();
+header("Content-Type: application/json; charset=UTF-8");
 $resposta = [];
 
 if (!isset($_SESSION['tipo'])) {
@@ -14,5 +15,4 @@ $resposta = [
     "tipos" => $_SESSION['tipo']
 ];
     
-header("Content-Type: application/json; charset=UTF-8");
 echo json_encode($resposta);
