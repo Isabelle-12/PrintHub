@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const btnEnviar = document.getElementById("enviar");
-    
+
     btnEnviar.addEventListener("click", async (e) => {
         e.preventDefault(); // Impede o recarregamento da página
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             perfil: 'CLIENTE' // Definido fixo para este formulário
         };
 
-        if(!dados.nome || !dados.email || !dados.senha){
+        if (!dados.nome || !dados.email || !dados.senha) {
             alert("Por favor, preencha os campos obrigatórios (Nome, E-mail e Senha).");
             return;
         }
@@ -30,16 +30,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const retorno = await fetch("../controllers/usuario/php/cadastro.php", {
+            const retorno = await fetch("/app/controllers/usuario/php/cadastro.php", {
                 method: "POST",
                 body: fd
             });
 
             const resposta = await retorno.json();
 
-            if(resposta.status === "ok"){
+            if (resposta.status === "ok") {
                 alert(resposta.mensagem);
-                window.location.href = "login.html";
+                window.location.href = "/index.php?rota=login";
             } else {
                 alert("Erro: " + resposta.mensagem);
             }

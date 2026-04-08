@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-type: application/json; charset=utf-8");
 
 include_once(__DIR__ . '/../../../../config/conexao.php');
@@ -26,7 +27,6 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
         while ($linha = $resultado->fetch_assoc()) {
             $tabela[] = $linha;
         }
-        session_start();
         $_SESSION['email'] = $email; // cria sessão e guarda
         $_SESSION['tipo'] = $tabela[0]['tipo_perfil']; //ta recebendo o tipo logado la na table, 0 é pq é só um array q tem na lista q é oq loga
       

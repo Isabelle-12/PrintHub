@@ -27,7 +27,7 @@ async function login(){
 
         if(resposta.status == "ok"){
             // Redireciona baseado no tipo de perfil (opcional, mas útil)
-            window.location.href = "usuario_painel.html"; 
+           await conta_red();
         } else {
             alert(resposta.mensagem);
         }
@@ -36,3 +36,22 @@ async function login(){
         alert("Erro ao conectar com o servidor.");
     }
 }
+
+ async function conta_red() {
+    const resposta= await fetch("/config/tipagem.php");
+    const resp =  await resposta.json();
+    const tipagem = resp.tipos;
+
+    console.log(tipagem);
+
+    switch(tipagem) {
+        case "cliente": window.location.href = "/index.php?rota=usuario-painel"; 
+        break;
+        // case "maker":   window.location.href = "/index.php?rota=usuario-painel"; break;
+        case "admin":   window.location.href = "/index.php?rota=admin-notificacoes"; 
+        break;
+        default:        window.location.href = "/index.php?rota=home";
+         break;
+    }
+    // Redirecionando para outra página após o login
+    }
