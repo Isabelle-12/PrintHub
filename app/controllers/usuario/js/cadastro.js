@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const retorno = await fetch("/app/controllers/usuario/php/cadastro.php", {
+            const retorno = await fetch("../app/controllers/usuario/php/cadastro.php", {
                 method: "POST",
                 body: fd
             });
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (resposta.status === "ok") {
                 alert(resposta.mensagem);
-                window.location.href = "/index.php?rota=login";
+                window.location.href = "index.php?rota=login";
             } else {
                 alert("Erro: " + resposta.mensagem);
             }
