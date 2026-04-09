@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Usuário</title>
+    <title>Painel do Fabricante</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -53,7 +53,6 @@
             align-items: center;
             gap: 8px;
         }
-
 
         .navbar .nav-link {
             color: rgba(255,255,255,0.82) !important;
@@ -187,26 +186,26 @@
     </style>
 </head>
 
-<body data-acesso="CLIENTE,ADMIN">
+<body data-acesso="MAKER,ADMIN">
 
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php?rota=usuario-painel">Printly</a>
+            <a class="navbar-brand" href="index.php?rota=fabricante-painel">Printly</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item" id="notif">
+                    <li class="nav-item" id="notifFabricante">
                         <a class="nav-link" href="index.php?rota=admin-notificacoes">
                             <i class="bi bi-bell me-1"></i>Notificações
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active">
-                            <i class="bi bi-grid me-1"></i>Painel do Usuário
+                        <a class="nav-link active" href="index.php?rota=fabricante-painel">
+                            <i class="bi bi-grid me-1"></i>Painel
                         </a>
                     </li>
-                    <li class="nav-item" id="usuario">
-                        <a class="nav-link" href="index.php?rota=admin-usuarios">
-                            <i class="bi bi-people me-1"></i>Usuários
+                    <li class="nav-item" id="fabricante">
+                        <a class="nav-link" href="index.php?rota=admin-fabricante">
+                            <i class="bi bi-tools me-1"></i>Fabricante
                         </a>
                     </li>
                 </ul>
@@ -228,7 +227,7 @@
         <!-- Header da página -->
         <div class="page-header">
             <div>
-                <h4>Painel do Usuário</h4>
+                <h4>Painel do Fabricante</h4>
                 <p>Gerencie seus pedidos e acompanhe notificações</p>
             </div>
         </div>
@@ -265,7 +264,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../app/controllers/admin/js/notificacoes.js"></script>
-    <script src="../app/controllers/usuario/js/verif.js"></script>
+    <script src="../app/controllers/fabricante/js/verifFabricante.js"></script>
 
 </body>
 

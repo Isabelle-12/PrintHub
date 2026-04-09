@@ -47,6 +47,8 @@ async function login(){
     switch(tipagem) {
         case "CLIENTE": window.location.href = "index.php?rota=usuario-painel"; 
         break;
+        case "MAKER": window.location.href = "index.php?rota=fabricante-painel"; 
+        break;
         // case "maker":   window.location.href = "/index.php?rota=usuario-painel"; break;
         case "ADMIN":   window.location.href = "index.php?rota=admin-notificacoes"; 
         break;
