@@ -57,6 +57,17 @@ function salvarAlteracoes() {
     const nova_senha = document.getElementById("nova_senha").value;
     const confirmar_senha = document.getElementById("confirmar_senha").value;
 
+    if (!email.includes("@")) {
+        alert("O e-mail deve conter @");
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("O formato do e-mail está incorreto!");
+        return;
+    }
+
     if (nova_senha && nova_senha !== confirmar_senha) {
         alert("As senhas não coincidem!");
         return;
