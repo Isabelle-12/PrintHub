@@ -7,5 +7,6 @@ return [
     'cadastro'     => __DIR__ . '/../app/views/cadastro_usuario.html',
     'login'     => __DIR__ . '/../app/views/login.html',
     'home'     => __DIR__ . '/../app/views/home.html',
+    'editar-usuario' => __DIR__ . '/../app/views/editar_usuarios.html',
 
 ];

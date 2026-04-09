@@ -34,10 +34,11 @@ async function verif() {
 // nao sei se deixo no dom ja que nao está no header, mas deixarei
 window.addEventListener('DOMContentLoaded', () => {
     verif();
-    document.getElementById("sair").addEventListener("click", sair);
-
+    const btnSair = document.getElementById("sair");
+    if (btnSair) {
+        btnSair.addEventListener("click", sair);
+    }
 });
-
 
 
 

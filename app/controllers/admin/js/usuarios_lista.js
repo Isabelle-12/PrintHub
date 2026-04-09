@@ -72,6 +72,12 @@ async function excluirUsuario(id) {
     buscarSolicitacoes();
 }
 
+// --- FUNÇÕES DE AÇÃO (EDITAR / VALIDAR) ---
+
+function editarUsuario(id) {
+    window.location.href = "index.php?rota=editar-usuario&id=" + id;
+}
+
 async function validarFabricante(id, decisao) {
     const acao = decisao === 'aprovar' ? 'APROVAR' : 'REJEITAR';
     if (!confirm(`Deseja realmente ${acao} este cadastro de fabricante?`)) return;
@@ -98,7 +104,7 @@ function preencherTabela(lista) {
                 <td>${usuario.email}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick='verPerfil(${JSON.stringify(usuario)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
-                    <button class="btn btn-warning btn-sm">Editar</button>
+                    <button class="btn btn-warning btn-sm" onclick="editarUsuario(${usuario.id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${usuario.id})">Excluir</button>
                 </td>
             </tr>`;
