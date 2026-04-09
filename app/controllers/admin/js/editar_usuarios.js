@@ -18,7 +18,7 @@ async function carregarUsuario() {
         return;
     }
     try {
-        const retorno = await fetch(`../app/controllers/admin/usuario_get.php?id=${id}`);
+        const retorno = await fetch("../app/controllers/admin/usuario_get.php?id=${id}");
         const resposta = await retorno.json(); 
 
         
