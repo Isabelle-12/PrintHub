@@ -21,17 +21,17 @@
     </style>
 </head>
 
-<body data-acesso="CLIENTE">
+<body data-acesso="CLIENTE,ADMIN">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
         <div class="container">
             <a class="navbar-brand" href="index.php?rota=home">Printly</a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active"
+                    <li class="nav-item" id="notif"><a class="nav-link"
                             href="index.php?rota=admin-notificacoes">Notificações</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php?rota=usuario-painel">Painel</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php?rota=admin-usuarios">Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.php?rota=usuario-painel">Painel</a></li>
+                    <li class="nav-item" id="usuario"><a class="nav-link" href="index.php?rota=admin-usuarios">Usuarios</a></li>
                 </ul>
             </div>
         </div>
