@@ -7,9 +7,10 @@ $retorno = [
     'data'      => []
 ];
 
+
 if(isset($_GET['id'])){
     $stmt = $conexao->prepare("
-        SELECT f.id, f.usuario_id, u.nome, u.email, f.cnpj, f.telefone_comercial, f.endereco_empresa, f.data_aprovacao
+        SELECT f.id, f.usuario_id, u.nome, u.email,u.senha, f.cnpj, f.telefone_comercial, f.endereco_empresa, f.data_aprovacao
         FROM fabricantes f
         JOIN usuarios u ON f.usuario_id = u.id
         WHERE f.id = ?
@@ -17,7 +18,7 @@ if(isset($_GET['id'])){
     $stmt->bind_param("i", $_GET['id']);
 } else {
     $stmt = $conexao->prepare("
-        SELECT f.id, f.usuario_id, u.nome, u.email, f.cnpj, f.telefone_comercial, f.endereco_empresa, f.data_aprovacao
+        SELECT f.id, f.usuario_id, u.nome, u.email, u.senha, f.cnpj, f.telefone_comercial, f.endereco_empresa, f.data_aprovacao
         FROM fabricantes f
         JOIN usuarios u ON f.usuario_id = u.id
         ORDER BY u.nome

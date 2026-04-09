@@ -82,6 +82,10 @@ function editarAdmin(id) {
     window.location.href = "index.php?rota=editar-administrador&id=" + id;
 }
 
+function editarFabricante(id) {
+    window.location.href = "index.php?rota=editar-fabricante&id=" + id;
+}
+
 
 async function validarFabricante(id, decisao) {
     const acao = decisao === 'aprovar' ? 'APROVAR' : 'REJEITAR';
@@ -127,7 +131,7 @@ function preencherTabelaFabricante(lista) {
                 <td>${fab.cnpj || 'N/A'}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick='verPerfilFabricante(${JSON.stringify(fab)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
-                    <button class="btn btn-warning btn-sm">Editar</button>
+                    <button class="btn btn-warning btn-sm" onclick="editarFabricante(${fab.id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${fab.id})">Excluir</button>
                 </td>
             </tr>`;
