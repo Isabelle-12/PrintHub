@@ -126,13 +126,14 @@ function preencherTabelaFabricante(lista) {
     lista.forEach(fab => {
         html += `
             <tr>
-                <td>${fab.id}</td>
+                <td>${fab.usuario_id}</td> 
                 <td>${fab.nome}</td>
                 <td>${fab.cnpj || 'N/A'}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick='verPerfilFabricante(${JSON.stringify(fab)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
-                    <button class="btn btn-warning btn-sm" onclick="editarFabricante(${fab.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${fab.id})">Excluir</button>
+                    
+                    <button class="btn btn-warning btn-sm" onclick="editarFabricante(${fab.usuario_id})">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${fab.usuario_id})">Excluir</button>
                 </td>
             </tr>`;
     });
@@ -169,6 +170,7 @@ function preencherTabelaSolicitacoes(lista) {
                 <td>
                     <button class="btn btn-success btn-sm me-1" onclick="validarFabricante(${sol.id}, 'aprovar')">Aprovar</button>
                     <button class="btn btn-danger btn-sm" onclick="validarFabricante(${sol.id}, 'rejeitar')">Rejeitar</button>
+                    <button class="btn btn-primary btn-sm" onclick='verInfoSolicitacao(${JSON.stringify(sol)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
                 </td>
             </tr>`;
     });
@@ -214,5 +216,20 @@ function verPerfilAdministrador(administrador) {
         <p><strong>Endereço:</strong> ${administrador.endereco}</p>
         <p><strong>Status:</strong> ${administrador.status}</p>
         <p><strong>Data de Cadastro:</strong> ${administrador.data_cadastro}</p>
+    `;
+}
+function verInfoSolicitacao(sol) {
+    document.getElementById("conteudoModal").innerHTML = `
+    <h5 class="border-bottom pb-2">Dados do Solicitante</h5>
+        <p><strong>Nome:</strong> ${sol.nome}</p>
+        <p><strong>E-mail:</strong> ${sol.email || 'Não informado'}</p>
+        <p><strong>Telefone:</strong> ${sol.telefone || 'Não informado'}</p>
+        <p><strong>Cidade/Estado:</strong> ${sol.cidade} - ${sol.estado}</p>
+        <p><strong>Endereço:</strong> ${sol.endereco}</p>
+        
+        <h5 class="border-bottom pb-2 mt-3">Equipamento e Materiais</h5>
+        <p><strong>Impressora:</strong> ${sol.impressora || 'Não informada'}</p>
+        <p><strong>Materiais:</strong> ${sol.materiais || 'Não informados'}</p>
+        <p><strong>CNPJ:</strong> ${sol.cnpj || 'Pessoa Física'}</p>
     `;
 }

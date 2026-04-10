@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     const btnEnviar = document.getElementById("enviar");
+//     const btnTeste = document.getElementById("teste");
+//    btnTeste.addEventListener("click", teste);
+
 
     btnEnviar.addEventListener("click", async (e) => {
         e.preventDefault(); // Impede o recarregamento da página
@@ -15,15 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
             cidade: document.getElementById("cidade").value,
             estado: document.getElementById("estado").value,
             endereco: document.getElementById("endereco").value,
-            perfil: 'CLIENTE' // Definido fixo para este formulário
+            perfil: 'CLIENTE'// Definido fixo para este formulário
         };
 
-        if(!dados.nome || !dados.email || !dados.senha || !dados.telefone || !dados.documento || !dados.cep || !dados.cidade || !dados.estado || !dados.endereco){
+        if (!dados.nome || !dados.email || !dados.senha || !dados.telefone || !dados.documento || !dados.cep || !dados.cidade || !dados.estado || !dados.endereco) {
             alert("Por favor, preencha os campos obrigatórios (Nome, E-mail e Senha).");
             return;
         }
-         
-         // Validação simples: apenas checa se existe o @
+        // Validação simples: apenas checa se existe o @
         if (!dados.email.includes("@")) {
             alert("Por favor, insira um e-mail válido com @");
             return; // Para a execução aqui e não envia para o PHP
@@ -60,4 +62,18 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Erro ao conectar com o servidor.");
         }
     });
+
+    // async function teste() {
+    //     const senha2 = document.getElementById("senha2").value;
+        
+    //     if (senha2.length <= 8 ||!/[!@#$%^&*(),.?":{}|<>_\-\\[\];'/+=~`]/.test(senha2)) {
+    //         alert("A senha deve ter pelo menos 8 caracteres e/ou caracteres especiais.");
+    //         apc = document.getElementById("apc");
+    //         apc.innerHTML = "A senha deve ter pelo menos 8 caracteres e/ou caracteres especiais.";
+    //     }
+    //     alert("foi");
+        
+
+    //   }     
+    // }
 });

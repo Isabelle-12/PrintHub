@@ -275,3 +275,24 @@ CREATE TABLE config_prazos (
 );
 
 INSERT INTO config_prazos (tipo_operacao, dias_prazo) VALUES ('PEDIDO_PADRAO', 7);
+
+ALTER TABLE pedidos DROP FOREIGN KEY pedidos_ibfk_1; -- Remove a FK antiga do projeto
+ALTER TABLE pedidos DROP FOREIGN KEY pedidos_ibfk_2; -- Remove a FK antiga do maker
+
+ALTER TABLE pedidos 
+    ADD CONSTRAINT fk_pedidos_projeto FOREIGN KEY (projeto_id) REFERENCES projetos(id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_pedidos_maker FOREIGN KEY (maker_id) REFERENCES usuarios(id) ON DELETE CASCADE;
+    
+ALTER TABLE avaliacoes DROP FOREIGN KEY avaliacoes_ibfk_2; -- Cliente
+ALTER TABLE avaliacoes DROP FOREIGN KEY avaliacoes_ibfk_3; -- Maker
+
+ALTER TABLE avaliacoes 
+    ADD CONSTRAINT fk_avaliacoes_cliente FOREIGN KEY (cliente_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_avaliacoes_maker FOREIGN KEY (maker_id) REFERENCES usuarios(id) ON DELETE CASCADE;
+    
+ALTER TABLE mensagens DROP FOREIGN KEY mensagens_ibfk_2; -- Remetente
+ALTER TABLE mensagens DROP FOREIGN KEY mensagens_ibfk_3; -- Destinatario
+
+ALTER TABLE mensagens 
+    ADD CONSTRAINT fk_mensagens_remetente FOREIGN KEY (remetente_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    ADD CONSTRAINT fk_mensagens_destinatario FOREIGN KEY (destinatario_id) REFERENCES usuarios(id) ON DELETE CASCADE;

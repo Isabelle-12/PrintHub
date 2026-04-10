@@ -7,43 +7,302 @@
     <title>Painel de Notificações - Printly</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --printly-primary: #412746;
+            --printly-primary-dark: #7a3077;
+            --printly-accent: #5a0a61;
+            --printly-light: #f0cef5;
+            --printly-surface: #ffffff;
+            --printly-bg: #fff5fe;
+            --printly-text: #4b1b4b;
+            --printly-muted: #9e939e;
+            --printly-border: #c2b9c28c;
+            --printly-shadow: 0 2px 12px rgba(229, 70, 181, 0.08);
+            --printly-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #f8f9fa;
+            background-color: var(--printly-bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--printly-text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--printly-primary) 0%, var(--printly-primary-dark) 100%) !important;
+            padding: 0.75rem 0;
+            box-shadow: 0 2px 16px rgba(216, 70, 229, 0.25);
+            border-bottom: none;
+        }
+
+        .navbar-brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: -0.5px;
+            color: #fff !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar .nav-link {
+            color: rgba(255,255,255,0.82) !important;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.45rem 0.9rem !important;
+            border-radius: 8px;
+            transition: background 0.18s, color 0.18s;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            background: rgba(255,255,255,0.18);
+            color: #fff !important;
+        }
+
+        #sair {
+            background: rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.82);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.9rem;
+            transition: background 0.18s;
+        }
+
+        #sair:hover {
+            background: rgba(255,255,255,0.22);
+            color: #fff;
         }
 
         .container {
             max-width: 1200px;
         }
 
+        #banner-anuncios .alert {
+            border: none;
+            border-left: 4px solid #f59e0b;
+            background: #fffbeb;
+            border-radius: var(--printly-radius);
+            box-shadow: var(--printly-shadow);
+            color: #92400e;
+            padding: 1rem 1.25rem;
+        }
+
+        #banner-anuncios .btn-close {
+            opacity: 0.5;
+        }
+
         .card {
-            margin-bottom: 20px;
+            border: 1px solid var(--printly-border);
+            border-radius: var(--printly-radius);
+            box-shadow: var(--printly-shadow);
+            background: var(--printly-surface);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 24px rgba(79, 70, 229, 0.13);
+        }
+
+        .card-header {
+            background: var(--printly-light);
+            border-bottom: 1px solid var(--printly-border);
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 0.975rem;
+            font-weight: 600;
+            color: var(--printly-primary);
+            letter-spacing: -0.2px;
+            flex: 1;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .text-muted {
+            color: var(--printly-muted) !important;
+            font-size: 0.9rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--printly-border);
+        }
+
+        .page-header h4 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--printly-text);
+            margin: 0;
+        }
+
+        .page-header p {
+            font-size: 0.85rem;
+            color: var(--printly-muted);
+            margin: 2px 0 0;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--printly-text);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+            border: 1px solid var(--printly-border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--printly-text);
+            background: var(--printly-surface);
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+
+        .form-control:focus {
+            border-color: var(--printly-accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        .btn-success {
+            background: var(--printly-accent);
+            border-color: var(--printly-accent);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 0.45rem 1.1rem;
+        }
+
+        .btn-success:hover {
+            background: #990c92;
+            border-color: #de9ceb;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            padding: 0.35rem 0.9rem;
+            color: var(--printly-muted);
+            border-color: var(--printly-border);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--printly-light);
+            color: var(--printly-primary);
+            border-color: var(--printly-border);
+        }
+
+        .btn-primary {
+            background: var(--printly-accent);
+            border-color: var(--printly-accent);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-primary:hover {
+            background: #e546b5;
+            border-color: #c546e5;
+        }
+
+        .btn-secondary {
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .modal-content {
+            border: 1px solid var(--printly-border);
+            border-radius: var(--printly-radius);
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.15);
+        }
+
+        .modal-header {
+            background: var(--printly-light);
+            border-bottom: 1px solid var(--printly-border);
+            border-radius: var(--printly-radius) var(--printly-radius) 0 0;
+            padding: 1rem 1.25rem;
+        }
+
+        .modal-title {
+            font-size: 0.975rem;
+            font-weight: 600;
+            color: var(--printly-primary);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--printly-border);
+            padding: 0.85rem 1.25rem;
+        }
+
+        @media (max-width: 576px) {
+            .card-header {
+                padding: 0.75rem 1rem;
+            }
+            .card-body {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 
 <body data-acesso="ADMIN">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php?rota=home">Printly</a>
+            <a class="navbar-brand" href="index.php?rota=admin-notificacoes">Printly</a>
             <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active"
-                            href="index.php?rota=admin-notificacoes">Notificações</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php?rota=usuario-painel">Painel</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php?rota=admin-usuarios">Usuarios</a></li>
-                    <button class="btn btn-sm btn-sm ms-2 mt-1" type="button" id="sair">    <i class="bi bi-door-open"></i>
-</button>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php?rota=admin-notificacoes">
+                            <i class="bi bi-bell me-1"></i>Notificações
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?rota=usuario-painel">
+                            <i class="bi bi-grid me-1"></i>Painel do Usuário
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?rota=admin-usuarios">
+                            <i class="bi bi-people me-1"></i>Usuários
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-sm" type="button" id="sair">
+                            <i class="bi bi-door-open"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h1 class="mb-4">Painel de Notificações — Administrador</h1>
+    <div class="container mt-4">
 
-
+        <!-- Banner de anúncios -->
         <div id="banner-anuncios" class="d-none">
             <div class="alert alert-warning alert-dismissible fade show mb-3" role="alert">
                 <strong id="banner-titulo"></strong> &mdash; <span id="banner-mensagem"></span>
@@ -52,16 +311,23 @@
             </div>
         </div>
 
+        <!-- Header da página -->
+        <div class="page-header">
+            <div>
+                <h4>Painel de Notificações</h4>
+                <p>Administrador — gerencie avisos, atrasos e manutenções</p>
+            </div>
+        </div>
+
         <!-- Critério 1: Notificar atrasos -->
         <div class="card">
             <div class="card-header">
                 <h5>Notificar Atrasos em Pedidos</h5>
-
-            </div>
-            <div class="card-body"> <button class="btn btn-sm btn-outline-secondary float-end" data-bs-toggle="modal"
-                    data-bs-target="#modalPrazo">
+                <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalPrazo">
                     Configurar Prazo
                 </button>
+            </div>
+            <div class="card-body">
                 <p class="text-muted mb-3">Pedidos com prazo expirado e ainda não concluídos:</p>
                 <div id="pedidos-atrasados">
                     <p class="text-muted">Carregando...</p>
@@ -69,12 +335,12 @@
             </div>
         </div>
 
+        <!-- Agendar Manutenção -->
         <div class="card">
             <div class="card-header">
                 <h5>Agendar Manutenção Programada</h5>
             </div>
             <div class="card-body">
-
                 <form id="form-manutencao">
                     <div class="mb-3">
                         <label for="titulo" class="form-label">Título do Aviso</label>
@@ -97,6 +363,7 @@
             </div>
         </div>
 
+        <!-- Notificações Enviadas -->
         <div class="card">
             <div class="card-header">
                 <h5>Notificações Enviadas / Retratar</h5>
@@ -107,6 +374,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Prazo -->
         <div class="modal fade" id="modalPrazo" tabindex="-1" aria-labelledby="modalPrazoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -115,8 +384,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-muted">Define quantos dias o fabricante tem para concluir um pedido após
-                            aceitá-lo.</p>
+                        <p class="text-muted">Define quantos dias o fabricante tem para concluir um pedido após aceitá-lo.</p>
                         <div class="mb-3">
                             <label for="input-dias-prazo" class="form-label">Prazo em dias</label>
                             <input type="number" class="form-control" id="input-dias-prazo" min="1" placeholder="Ex: 7">
@@ -125,11 +393,12 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                       <button type="button" class="btn btn-primary" id="btn-salvar-prazo">Salvar</button>
+                        <button type="button" class="btn btn-primary" id="btn-salvar-prazo">Salvar</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

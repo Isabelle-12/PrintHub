@@ -5,8 +5,8 @@ header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . "/../../../config/conexao.php";
 
 try {
-    // SQL para buscar os dados das tabelas relacionadas
-    $sql = "SELECT u.id, u.nome, u.cidade, f.cnpj, 
+    // SQL corrigida: agora entre aspas e com todos os campos para o modal
+    $sql = "SELECT u.id, u.nome, u.email, u.telefone, u.cidade, u.estado, u.endereco, f.cnpj, 
             (SELECT GROUP_CONCAT(modelo SEPARATOR ', ') FROM impressoras WHERE maker_id = u.id) as impressora,
             (SELECT GROUP_CONCAT(tipo_material SEPARATOR ', ') FROM materiais_maker WHERE maker_id = u.id) as materiais
             FROM usuarios u
