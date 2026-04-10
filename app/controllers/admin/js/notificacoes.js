@@ -240,9 +240,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    carregarAnunciosGlobais();
-    carregarMinhasNotificacoes();
-    document.getElementById('modalPrazo').addEventListener('show.bs.modal', function () {
-    carregarPrazoAtual();
-});
+    // DOMContentLoaded (só inicialização)
+    document.addEventListener('DOMContentLoaded', function() {
+        carregarAnunciosGlobais();
+        carregarMinhasNotificacoes();
+    });
+
+    // Delegação de evento (global, só uma vez)
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('#btn-salvar-prazo');
+        if (btn) {
+            salvarPrazo();
+        }
+    });
 });
