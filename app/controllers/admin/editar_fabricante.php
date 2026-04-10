@@ -35,12 +35,27 @@ try {
     $stmtU->bind_param("sssi", $nome, $email, $perfil, $id_usuario);
     $stmtU->execute();
 
-    // UPDATE na tabela FABRICANTES
-    $sqlFab = "UPDATE fabricantes SET cnpj = ?, telefone_comercial = ?, endereco_empresa = ? WHERE id = ?";
-    $stmtF = $conexao->prepare($sqlFab);
-    $stmtF->bind_param("sssi", $cnpj, $tel_com, $end_emp, $id_fabricante);
-    $stmtF->execute();
-
+    if ($perfil === 'MAKER') {
+        // Se continua sendo MAKER, faz o UPDATE normal ou INSERT se não existir
+        if ($id_fabricante > 0) {
+            $sqlFab = "UPDATE fabricantes SET cnpj = ?, telefone_comercial = ?, endereco_empresa = ? WHERE id = ?";
+            $stmtF = $conexao->prepare($sqlFab);
+            $stmtF->bind_param("sssi", $cnpj, $tel_com, $end_emp, $id_fabricante);
+        } else {
+            // Caso tenha mudado para MAKER agora e o ID_fabricante ainda não exista
+            $sqlFab = "INSERT INTO fabricantes (usuario_id, cnpj, telefone_comercial, endereco_empresa) VALUES (?, ?, ?, ?)";
+            $stmtF = $conexao->prepare($sqlFab);
+            $stmtF->bind_param("isss", $id_usuario, $cnpj, $tel_com, $end_emp);
+        }
+        $stmtF->execute();
+    }else {
+        // Se o perfil mudou para CLIENTE ou ADMIN, removemos ele da tabela de fabricantes
+        // Assim ele para de aparecer na lista de makers
+        $sqlDel = "DELETE FROM fabricantes WHERE usuario_id = ?";
+        $stmtD = $conexao->prepare($sqlDel);
+        $stmtD->bind_param("i", $id_usuario);
+        $stmtD->execute();
+    }
     // Se chegou aqui, deu tudo certo
     $conexao->commit();
     $retorno['status'] = 'ok';

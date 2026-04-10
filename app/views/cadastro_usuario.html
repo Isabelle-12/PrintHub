@@ -225,13 +225,16 @@
                     </div>
                     <div class="col-md-6">
                         <label for="senha" class="form-label">Senha <span class="obrigatorio">*</span></label>
-                        <input type="password" class="form-control" id="senha" name="senha" placeholder="••••••••">
+                        <input type="password" class="form-control" id="senha" name="senha" placeholder="••••••••" minlength="8">
+                        <small class="text-muted">Minimo de 8 caracteres</small>
+                        <div id="senha-erro" class="text-danger" style="font-size: 0.82rem; display: none;">A senha deve ter pelo menos 8 caracteres.</div>
                     </div>
+
                     <div class="col-md-6">
-                        <label for="senha2" class="form-label">Senha2 <span class="obrigatorio">*</span></label>
-                        <input type="password" class="form-control" id="senha2" name="senha2" placeholder="••••••••">
-                    <span id="apc"></span>
+                        <label for="confirmar_senha" class="form-label">Confirmar Senha<span class="obrigatorio">*</span></label>
+                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" placeholder="••••••••">
                     </div>
+                    
                     <div class="col-md-6">
                         <label for="telefone" class="form-label">Telefone</label>
                         <input type="tel" class="form-control" id="telefone" name="telefone"

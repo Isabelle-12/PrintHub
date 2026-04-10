@@ -19,25 +19,44 @@ async function carregarFabricante() {
     }
     
     try {
-       const retorno = await fetch(`../app/controllers/admin/fabricante_get.php?id=${id}&t=${Date.now()}`);
+        const retorno = await fetch(`../app/controllers/admin/fabricante_get.php?id=${id}&t=${Date.now()}`);
         const resposta = await retorno.json(); 
 
-        
         if (resposta.status === "ok") {
             const fab = resposta.data[0];
 
-            document.getElementById("id").value = fab.id;
+            // Campos Ocultos e Básicos
+            document.getElementById("id").value = fab.fabricante_id || '';
             document.getElementById("usuario_id").value = fab.usuario_id;
             document.getElementById("nome").value = fab.nome || '';
             document.getElementById("email").value = fab.email || '';
+            
+            // Perfil e Data
+            if (document.getElementById("tipo_perfil")) {
+                document.getElementById("tipo_perfil").value = fab.tipo_perfil || 'MAKER';
+            }
+            if (document.getElementById("data_aprovacao")) {
+                document.getElementById("data_aprovacao").value = fab.data_aprovacao || '';
+            }
+
+            // Campos do Fabricante
             document.getElementById("cnpj").value = fab.cnpj || '';
             document.getElementById("telefone_comercial").value = fab.telefone_comercial || '';
             document.getElementById("endereco_empresa").value = fab.endereco_empresa || '';
+
+            // Visualização de máquinas/materiais (Readonly)
+            if (document.getElementById("impressoras_visualizar")) {
+                document.getElementById("impressoras_visualizar").value = fab.impressoras || 'Nenhuma cadastrada';
+            }
+            if (document.getElementById("materiais_visualizar")) {
+                document.getElementById("materiais_visualizar").value = fab.materiais || 'Nenhum cadastrado';
+            }
+
         } else {
             alert("Erro ao carregar usuário: " + resposta.mensagem);
         }
     } catch (err) {
-        console.error(err);
+        console.error("Erro:", err);
         alert("Erro ao carregar dados do fabricante.");
     }
 }
@@ -54,8 +73,15 @@ function salvarAlteracoesFabricante() {
     fd.append("cnpj", document.getElementById("cnpj").value);
     fd.append("telefone_comercial", document.getElementById("telefone_comercial").value);
     fd.append("endereco_empresa", document.getElementById("endereco_empresa").value);
-    fd.append("nova_senha", nova_senha);
+    
+    // Novas informações para o PHP
+    fd.append("tipo_perfil", document.getElementById("tipo_perfil").value);
+    
 
+    
+    if (perfilInput) {
+        fd.append("tipo_perfil", perfilInput.value);
+    }
     const email = document.getElementById("email").value;
     if (!email.includes("@")) {
         alert("E-mail inválido.");

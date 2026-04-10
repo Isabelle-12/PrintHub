@@ -25,7 +25,35 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("Por favor, preencha os campos obrigatórios (Nome, E-mail e Senha).");
             return;
         }
-        // Validação simples: apenas checa se existe o @
+
+        //Validação simples da SENHA: apenas checa se a senha digitada tem 8 caracteres e heca se a senha tem no minimo uma caractere
+        const senha = document.getElementById("senha").value;
+        const senhaErro = document.getElementById("senha-erro");
+        const confirmar_senha = document.getElementById("confirmar_senha").value;
+
+        if(senha.length < 8){
+            senhaErro.style.display = "block";
+            document.getElementById("senha").focus();
+            return;
+        }else{
+            senhaErro.style.display = "none";
+        }
+        
+        const regexEspecial = /[!@#$%^&(),..?:]/;
+        if (!regexEspecial.test(senha)){
+            alert ("A senha deve conter pela menos uma caractere especial");
+            document.getElementById("senha").focus();
+            return;
+        }
+
+        if (senha !== confirmar_senha) {
+            alert("As senhas não coincidem!");
+            document.getElementById("confirmar_senha").focus();
+            return;
+        }
+
+
+        // Validação simples do EMAIL: apenas checa se existe o @
         if (!dados.email.includes("@")) {
             alert("Por favor, insira um e-mail válido com @");
             return; // Para a execução aqui e não envia para o PHP
@@ -42,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         for (const chave in dados) {
             fd.append(chave, dados[chave]);
         }
+
 
         try {
             const retorno = await fetch("../app/controllers/usuario/php/cadastro.php", {

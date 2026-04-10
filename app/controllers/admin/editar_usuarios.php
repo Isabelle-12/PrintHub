@@ -83,18 +83,40 @@ if (!empty($nova_senha)) {
     $stmt->bind_param("sssssssssi", $nome, $email, $documento, $endereco, $telefone, $cep, $cidade, $estado, $tipo_perfil, $id);
 }
 
+$executouComSucesso = $stmt->execute();
+$linhasAfetadas = $stmt->affected_rows; 
+$stmt->close();
 
-$stmt->execute();
-if ($stmt->affected_rows > 0) {
-    $retorno['status'] = 'ok';
-    $retorno['mensagem'] = 'Usuário atualizado com sucesso';
-} else {
-    $retorno['status'] = 'no';
-    $retorno['mensagem'] = 'Nenhuma alteração realizada ou dados iguais aos atuais';
+if ($tipo_perfil === 'MAKER') {
+    $checkFab = $conexao->prepare("SELECT id FROM fabricantes WHERE usuario_id = ?");
+    $checkFab->bind_param("i", $id);
+    $checkFab->execute();
+    $resFab = $checkFab->get_result();
+
+    if ($resFab->num_rows === 0) {
+        $insFab = $conexao->prepare("INSERT INTO fabricantes (usuario_id, cnpj, telefone_comercial) VALUES (?, ?, ?)");
+        $insFab->bind_param("iss", $id, $documento, $telefone);
+        $insFab->execute();
+        $insFab->close();
+    }
+    $checkFab->close();
 }
 
-$stmt->close();
-$conexao->close();
+// 5. Retorno final para o JavaScript
+if ($executouComSucesso) {
+    if ($linhasAfetadas > 0) {
+        $retorno['status'] = 'ok';
+        $retorno['mensagem'] = 'Usuário atualizado com sucesso';
+    } else {
+        // Se o tipo_perfil mudou para MAKER, tecnicamente houve uma ação bem sucedida na tabela fabricantes
+        $retorno['status'] = 'ok'; 
+        $retorno['mensagem'] = 'Dados atualizados ou já estavam idênticos.';
+    }
+} else {
+    $retorno['status'] = 'no';
+    $retorno['mensagem'] = 'Erro ao processar a atualização.';
+}
 
+$conexao->close();
 echo json_encode($retorno);
 exit;

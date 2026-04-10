@@ -196,12 +196,25 @@ function verPerfil(usuario) {
 
 function verPerfilFabricante(fabricante) {
     document.getElementById("conteudoModal").innerHTML = `
-        <p><strong>Nome:</strong> ${fabricante.nome}</p>
-        <p><strong>Email:</strong> ${fabricante.email}</p>
-        <p><strong>CNPJ:</strong> ${fabricante.cnpj}</p>
-        <p><strong>Telefone Comercial:</strong> ${fabricante.telefone_comercial}</p>
-        <p><strong>Endereço da Empresa:</strong> ${fabricante.endereco_empresa}</p>
-        <p><strong>Data de Aprovação:</strong> ${fabricante.data_aprovacao}</p>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Nome:</strong> ${fabricante.nome}</p>
+                <p><strong>Email:</strong> ${fabricante.email}</p>
+                <p><strong>CNPJ:</strong> ${fabricante.cnpj || 'Não informado'}</p>
+                <p><strong>Telefone Comercial:</strong> ${fabricante.telefone_comercial || 'Não informado'}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Data de Aprovação:</strong> ${fabricante.data_aprovacao || 'Pendente'}</p>
+                <p><strong>Endereço da Empresa:</strong> ${fabricante.endereco_empresa || 'Não informado'}</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <p><strong>Impressoras:</strong> <span class="badge bg-primary text-wrap">${fabricante.impressoras || 'Nenhuma cadastrada'}</span></p>
+                <p><strong>Materiais:</strong> <span class="badge bg-success text-wrap">${fabricante.materiais || 'Nenhum cadastrado'}</span></p>
+            </div>
+        </div>
     `;
 }
 function verPerfilAdministrador(administrador) {

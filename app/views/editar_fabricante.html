@@ -8,50 +8,77 @@
 </head>
 <body data-acesso="ADMIN">
 
-<div class="container mt-4">
+<div class="container mt-4 mb-5">
     <h2>Editar Fabricante (Maker)</h2>
+    <p class="text-muted">Gerencie as informações de perfil e dados comerciais do fabricante.</p>
 
     <form id="formEditarFabricante">
         <input type="hidden" id="id">
         <input type="hidden" id="usuario_id">
 
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
-            <input type="text" id="nome" class="form-control" required>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nome" class="form-label">Nome Completo</label>
+                <input type="text" id="nome" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" class="form-control" required>
-        </div>
-        
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="tipo_perfil" class="form-label">Tipo de Perfil</label>
+                <select id="tipo_perfil" class="form-select">
+                    <option value="MAKER" selected>Fabricante</option>
+                    <option value="CLIENTE">Usuário</option>
+                    <option value="ADMIN">Administrador</option>
+                </select>
+                <small class="text-danger">Atenção: Mudar para 'Usuário' removerá os dados de fabricante.</small>
+            </div>
 
-        <hr> <div class="mb-3">
-            <label for="cnpj" class="form-label">CNPJ</label>
-            <input type="text" id="cnpj" class="form-control">
         </div>
 
-        <div class="mb-3">
-            <label for="telefone_comercial" class="form-label">Telefone Comercial</label>
-            <input type="text" id="telefone_comercial" class="form-control">
+        <hr>
+        <h5 class="mb-3">Dados Comerciais</h5>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="cnpj" class="form-label">CNPJ</label>
+                <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0000-00">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="telefone_comercial" class="form-label">Telefone Comercial</label>
+                <input type="text" id="telefone_comercial" class="form-control" placeholder="(00) 00000-0000">
+            </div>
         </div>
 
         <div class="mb-3">
             <label for="endereco_empresa" class="form-label">Endereço da Empresa</label>
-            <input type="text" id="endereco_empresa" class="form-control">
+            <input type="text" id="endereco_empresa" class="form-control" placeholder="Rua, Número, Bairro, Cidade - UF">
+        </div>
+
+        <hr>
+        <h5 class="mb-3">Equipamentos e Materiais (Visualização)</h5>
+        
+        <div class="mb-3">
+            <label for="impressoras_visualizar" class="form-label">Impressoras Cadastradas</label>
+            <textarea id="impressoras_visualizar" class="form-control" rows="2" readonly style="background-color: #e9ecef;"></textarea>
+            <small class="text-muted">Para editar impressoras, vá ao módulo de Máquinas.</small>
         </div>
 
         <div class="mb-3">
-            <label for="tipo_perfil" class="form-label">Tipo de Perfil</label>
-            <select id="tipo_perfil" class="form-select">
-                <option value="MAKER" selected>Fabricante</option>
-                <option value="CLIENTE">Usuário</option>
-                <option value="ADMIN">Administrador</option>
-            </select>
+            <label for="materiais_visualizar" class="form-label">Materiais Disponíveis</label>
+            <textarea id="materiais_visualizar" class="form-control" rows="2" readonly style="background-color: #e9ecef;"></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary" id="salvar">Salvar Alterações</button>
-        <a href="index.php?rota=admin-usuarios" class="btn btn-secondary">Cancelar</a>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary" id="salvar">Salvar Alterações</button>
+            <a href="index.php?rota=admin-usuarios" class="btn btn-secondary">Cancelar</a>
+        </div>
     </form>
 </div>
 
