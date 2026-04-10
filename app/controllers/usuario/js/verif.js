@@ -27,12 +27,14 @@
     }
 
     async function sair() {
-    await fetch("../config/logout.php");
+    if (confirm('Deseja realmente sair?')) {
+    await fetch('../config/logout.php');
+        alert('Saindo...');
 
-    alert('Saindo...');
+        window.location.href = "index.php?rota=home";
+    }
 
-    window.location.href = "index.php?rota=home";
-
+    
 
     }
 
