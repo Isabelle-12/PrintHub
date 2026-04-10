@@ -1,6 +1,7 @@
 
 async function carregarPedidosExpirados() {
     const container = document.getElementById('pedidos-atrasados');
+    if (!container) return;
     container.innerHTML = '<p class="text-muted">Carregando...</p>';
 
     const resposta = await fetch('../app/controllers/admin/listar_pedidos_expirados.php');
@@ -242,7 +243,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     carregarAnunciosGlobais();
     carregarMinhasNotificacoes();
-    document.getElementById('modalPrazo').addEventListener('show.bs.modal', function () {
-    carregarPrazoAtual();
-});
+    const modalPrazo = document.getElementById('modalPrazo');
+    if (modalPrazo) {
+        modalPrazo.addEventListener('show.bs.modal', function () {
+            carregarPrazoAtual();
+        });
+    }
 });

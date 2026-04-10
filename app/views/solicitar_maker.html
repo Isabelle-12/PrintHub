@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar ser Maker – Printly</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body data-acesso="CLIENTE,ADMIN">
+
+    <nav class="navbar navbar-dark" style="background:#273146;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.php?rota=usuario-painel">Printly</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4" style="max-width:700px">
+        <h4 class="fw-bold mb-1">Solicitar ser Maker</h4>
+        <p class="text-muted mb-4">Preencha as informações abaixo. Sua solicitação será analisada pelos administradores.</p>
+
+        <div id="msg-feedback" class="d-none"></div>
+
+        <!-- Dados do negócio -->
+        <div class="card mb-3">
+            <div class="card-header fw-semibold">Dados do Negócio</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">CNPJ <small class="text-muted">(opcional)</small></label>
+                    <input type="text" id="cnpj" class="form-control" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Telefone Comercial</label>
+                    <input type="text" id="telefone_comercial" class="form-control" placeholder="(41) 99999-0000">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Endereço da Empresa / Ateliê</label>
+                    <input type="text" id="endereco_empresa" class="form-control" placeholder="Rua, número, bairro, cidade">
+                </div>
+            </div>
+        </div>
+
+        <!-- Impressoras -->
+        <div class="card mb-3">
+            <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
+                Impressoras
+                <button class="btn btn-sm btn-outline-primary" onclick="adicionarImpressora()">
+                    <i class="bi bi-plus"></i> Adicionar
+                </button>
+            </div>
+            <div class="card-body" id="lista-impressoras">
+                <!-- linhas geradas dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Materiais -->
+        <div class="card mb-3">
+            <div class="card-header fw-semibold d-flex justify-content-between align-items-center">
+                Materiais que Imprime
+                <button class="btn btn-sm btn-outline-primary" onclick="adicionarMaterial()">
+                    <i class="bi bi-plus"></i> Adicionar
+                </button>
+            </div>
+            <div class="card-body" id="lista-materiais">
+                <!-- linhas geradas dinamicamente -->
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100 mb-5" onclick="enviarSolicitacao()">
+            <i class="bi bi-send me-1"></i> Enviar Solicitação
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../app/controllers/usuario/js/verif.js"></script>
+    <script>
+        // Adiciona uma linha de impressora
+        function adicionarImpressora() {
+            const div = document.createElement('div');
+            div.className = 'row g-2 mb-2 linha-impressora';
+            div.innerHTML = `
+                <div class="col-md-6">
+                    <input type="text" class="form-control imp-modelo" placeholder="Modelo (ex: Ender 3 S1)">
+                </div>
+                <div class="col-md-5">
+                    <input type="number" class="form-control imp-volume" placeholder="Volume máx. (cm³)">
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.linha-impressora').remove()">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>`;
+            document.getElementById('lista-impressoras').appendChild(div);
+        }
+
+        // Adiciona uma linha de material
+        function adicionarMaterial() {
+            const div = document.createElement('div');
+            div.className = 'row g-2 mb-2 linha-material';
+            div.innerHTML = `
+                <div class="col-md-6">
+                    <input type="text" class="form-control mat-tipo" placeholder="Material (ex: PLA, ABS, PETG)">
+                </div>
+                <div class="col-md-5">
+                    <input type="number" step="0.01" class="form-control mat-preco" placeholder="R$/grama (ex: 0.15)">
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                    <button class="btn btn-sm btn-outline-danger" onclick="this.closest('.linha-material').remove()">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>`;
+            document.getElementById('lista-materiais').appendChild(div);
+        }
+
+        // Coleta os dados e envia para o PHP
+        async function enviarSolicitacao() {
+            const impressoras = [...document.querySelectorAll('.linha-impressora')].map(l => ({
+                modelo: l.querySelector('.imp-modelo').value.trim(),
+                volume:  l.querySelector('.imp-volume').value.trim()
+            })).filter(i => i.modelo);
+
+            const materiais = [...document.querySelectorAll('.linha-material')].map(l => ({
+                tipo:  l.querySelector('.mat-tipo').value.trim(),
+                preco: l.querySelector('.mat-preco').value.trim()
+            })).filter(m => m.tipo);
+
+            const body = {
+                cnpj:              document.getElementById('cnpj').value.trim(),
+                telefone_comercial: document.getElementById('telefone_comercial').value.trim(),
+                endereco_empresa:  document.getElementById('endereco_empresa').value.trim(),
+                impressoras,
+                materiais
+            };
+
+            const resp = await fetch('../app/controllers/usuario/php/solicitar_maker.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const dados = await resp.json();
+
+            const el = document.getElementById('msg-feedback');
+            el.classList.remove('d-none', 'alert-success', 'alert-danger');
+            if (dados.status === 'ok') {
+                el.className = 'alert alert-success';
+                el.textContent = '✅ Solicitação enviada! Aguarde a análise dos administradores.';
+                setTimeout(() => window.location.href = 'index.php?rota=usuario-painel', 2500);
+            } else {
+                el.className = 'alert alert-danger';
+                el.textContent = '❌ ' + dados.mensagem;
+            }
+        }
+
+        adicionarImpressora();
+        adicionarMaterial();
+    </script>
+</body>
+</html>

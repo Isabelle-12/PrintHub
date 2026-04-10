@@ -12,6 +12,6 @@ header("Content-Type: application/json; charset=UTF-8");
 echo json_encode([
     "logado" => true,
     "email" => $_SESSION['email'],
-    "tipos" => $_SESSION['tipo']
-
+    "tipos" => $_SESSION['tipo'],
+    "status_fabricante"  => $_SESSION['status_fabricante'] ?? 'NAO_SOLICITADO'
 ]);

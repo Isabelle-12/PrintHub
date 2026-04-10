@@ -11,5 +11,5 @@ return [
     'editar-usuario'        => __DIR__ . '/../app/views/editar_usuarios.html',
     'editar-administrador'  => __DIR__ . '/../app/views/editar_administrador.html',
     'editar-fabricante'     => __DIR__ . '/../app/views/editar_fabricante.html',
-    
+    'solicitar-maker'       => __DIR__ . '/../app/views/solicitar_maker.html',
 ];
