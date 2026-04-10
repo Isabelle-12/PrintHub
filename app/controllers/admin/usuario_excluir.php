@@ -1,119 +1,26 @@
 <?php
-include_once(__DIR__ . '/../../../config/conexao.php');
+header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . "/../../../config/conexao.php";
 
-$retorno = [
-    'status' => '',
-    'mensagem' => '',
-    'data' => []
-];
+$id = $_GET['id'] ?? null;
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id']; 
+if (!$id) {
+    echo json_encode(["status" => "erro", "mensagem" => "ID não informado."]);
+    exit;
+}
 
+try {
+    $sql = "DELETE FROM usuarios WHERE id = ?";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bind_param("i", $id); // "i" de integer para segurança
 
-    $stmt = $conexao->prepare("SELECT usuario_id FROM fabricantes WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-
-    if ($result) {
-        
-        $usuario_id = $result['usuario_id'];
-
-    
-        $stmt = $conexao->prepare("SELECT status_fabricante FROM usuarios WHERE id = ?");
-        $stmt->bind_param("i", $usuario_id);
-        $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if (!$user) {
-            $retorno = [
-                'status' => 'No',
-                'mensagem' => 'Usuário associado ao fabricante não encontrado.',
-                'data' => []
-            ];
-        } else {
-        
-            $stmtCheck = $conexao->prepare("
-                SELECT 
-                    (SELECT COUNT(*) FROM pedidos WHERE maker_id = ?) AS total_pedidos,
-                    (SELECT COUNT(*) FROM impressoras WHERE maker_id = ?) AS total_impressoras,
-                    (SELECT COUNT(*) FROM materiais_maker WHERE maker_id = ?) AS total_materiais
-            ");
-            $stmtCheck->bind_param("iii", $usuario_id, $usuario_id, $usuario_id);
-            $stmtCheck->execute();
-            $check = $stmtCheck->get_result()->fetch_assoc();
-            $stmtCheck->close();
-
-            if ($check['total_pedidos'] > 0 || $check['total_impressoras'] > 0 || $check['total_materiais'] > 0) {
-            
-                $stmtUpdate = $conexao->prepare("
-                    UPDATE usuarios 
-                    SET status = 'BANIDO', status_fabricante = 'REJEITADO' 
-                    WHERE id = ?
-                ");
-                $stmtUpdate->bind_param("i", $usuario_id);
-                $stmtUpdate->execute();
-                $stmtUpdate->close();
-
-                $retorno = [
-                    'status' => 'Ok',
-                    'mensagem' => 'Fabricante desativado, pois possui registros vinculados.',
-                    'data' => []
-                ];
-            } else {
-            
-                $stmtDel = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
-                $stmtDel->bind_param("i", $usuario_id);
-                $stmtDel->execute();
-                $stmtDel->close();
-
-                $stmtDelFab = $conexao->prepare("DELETE FROM fabricantes WHERE id = ?");
-                $stmtDelFab->bind_param("i", $id);
-                $stmtDelFab->execute();
-                $stmtDelFab->close();
-
-                $retorno = [
-                    'status' => 'Ok',
-                    'mensagem' => 'Fabricante excluído com sucesso.',
-                    'data' => []
-                ];
-            }
-        }
+    if ($stmt->execute()) {
+        echo json_encode(["status" => "ok", "mensagem" => "Usuário e todos os seus vínculos removidos com sucesso!"]);
     } else {
-        
-        $stmtDel = $conexao->prepare("DELETE FROM usuarios WHERE id = ?");
-        $stmtDel->bind_param("i", $id);
-        $stmtDel->execute();
-
-        if ($stmtDel->affected_rows > 0) {
-            $retorno = [
-                'status' => 'Ok',
-                'mensagem' => 'Usuário excluído com sucesso.',
-                'data' => []
-            ];
-        } else {
-            $retorno = [
-                'status' => 'No',
-                'mensagem' => 'Usuário não encontrado.',
-                'data' => []
-            ];
-        }
-
-        $stmtDel->close();
+        echo json_encode(["status" => "erro", "mensagem" => "Erro ao excluir: " . $conexao->error]);
     }
-
-} else {
-    $retorno = [
-        'status' => 'No',
-        'mensagem' => 'É necessário informar um ID para excluir.',
-        'data' => []
-    ];
+} catch (Exception $e) {
+    echo json_encode(["status" => "erro", "mensagem" => "Erro de servidor: " . $e->getMessage()]);
 }
 
 $conexao->close();
-header("Content-Type: application/json; charset=utf-8");
-echo json_encode($retorno);
-?>

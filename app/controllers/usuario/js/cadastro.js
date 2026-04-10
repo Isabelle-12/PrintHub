@@ -15,15 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
             cidade: document.getElementById("cidade").value,
             estado: document.getElementById("estado").value,
             endereco: document.getElementById("endereco").value,
-            perfil: 'CLIENTE' // Definido fixo para este formulário
+            perfil: 'CLIENTE'// Definido fixo para este formulário
         };
 
-        if(!dados.nome || !dados.email || !dados.senha || !dados.telefone || !dados.documento || !dados.cep || !dados.cidade || !dados.estado || !dados.endereco){
+        if (!dados.nome || !dados.email || !dados.senha || !dados.telefone || !dados.documento || !dados.cep || !dados.cidade || !dados.estado || !dados.endereco) {
             alert("Por favor, preencha os campos obrigatórios (Nome, E-mail e Senha).");
             return;
         }
-         
-         // Validação simples: apenas checa se existe o @
+        // Validação simples: apenas checa se existe o @
         if (!dados.email.includes("@")) {
             alert("Por favor, insira um e-mail válido com @");
             return; // Para a execução aqui e não envia para o PHP
