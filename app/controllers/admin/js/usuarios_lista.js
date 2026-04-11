@@ -86,6 +86,36 @@ function editarFabricante(id) {
     window.location.href = "index.php?rota=editar-fabricante&id=" + id;
 }
 
+//FUNÇÃO DE AÇÃO (RESETAR SENHA)
+async function resetarSenha(usuarioId) {
+    if (!confirm("Deseja realmente resetar a senha deste usuário?")) return;
+
+    try {
+        const formData = new FormData();
+        formData.append("usuario_id", usuarioId);
+
+        const response = await fetch("../app/controllers/admin/reset_admin.php", {
+            method: "POST",
+            body: formData
+        });
+
+        // --- ADICIONE ISSO AQUI PARA PEGAR O ERRO ---
+        const textoErro = await response.text();
+        console.log("ERRO NO RESET:", textoErro); 
+        const resultado = JSON.parse(textoErro);
+        // --------------------------------------------
+
+        if (resultado.status === "ok") {
+            alert("E-mail de redefinição enviado com sucesso!");
+        } else {
+            alert("Erro: " + resultado.mensagem);
+        }
+
+    } catch (erro) {
+        console.error("Erro detalhado:", erro);
+        alert("Ocorreu um erro técnico. Verifique o console (F12).");
+    }
+}
 
 async function validarFabricante(id, decisao) {
     const acao = decisao === 'aprovar' ? 'APROVAR' : 'REJEITAR';
@@ -115,6 +145,7 @@ function preencherTabela(lista) {
                     <button class="btn btn-primary btn-sm" onclick='verPerfil(${JSON.stringify(usuario)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
                     <button class="btn btn-warning btn-sm" onclick="editarUsuario(${usuario.id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${usuario.id})">Excluir</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="resetarSenha(${usuario.id})">Resetar Senha</button>
                 </td>
             </tr>`;
     });
@@ -131,9 +162,9 @@ function preencherTabelaFabricante(lista) {
                 <td>${fab.cnpj || 'N/A'}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick='verPerfilFabricante(${JSON.stringify(fab)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
-                    
                     <button class="btn btn-warning btn-sm" onclick="editarFabricante(${fab.usuario_id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${fab.usuario_id})">Excluir</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick=""(${fab.usuario_id})">Resetar Senha</button>
                 </td>
             </tr>`;
     });
@@ -152,6 +183,7 @@ function preencherTabelaAdministrador(lista) {
                     <button class="btn btn-primary btn-sm" onclick='verPerfilAdministrador(${JSON.stringify(adm)})' data-bs-toggle="modal" data-bs-target="#modalPerfil">Ver</button>
                     <button class="btn btn-warning btn-sm" onclick="editarAdmin(${adm.id})">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="excluirUsuario(${adm.id})">Excluir</button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="resetarSenha(${adm.id})">Resetar Senha</button>
                 </td>
             </tr>`;
     });

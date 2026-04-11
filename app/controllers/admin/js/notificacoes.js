@@ -176,6 +176,52 @@ async function carregarMinhasNotificacoes() {
         container.innerHTML = '<p class="text-success">Nenhuma notificação pendente.</p>';
     }
 }
+async function carregarMinhasNotificacoesUsuario() {
+    // 1. Verifica se o container existe na tela
+    const container = document.getElementById('minhas-notificacoes');
+    if (!container) {
+        console.warn("Aviso: Elemento 'minhas-notificacoes' não encontrado no HTML.");
+        return;
+    }
+
+    try {
+        const resposta = await fetch('../app/controllers/usuario/php/carregar_minhas_notificacoes.php');
+        const retorno = await resposta.json();
+
+        console.log("Dados recebidos do PHP:", retorno);
+
+        // 2. Verifica se o status é 'ok' e se o array 'data' tem conteúdo
+        if (retorno.status === 'ok' && Array.isArray(retorno.data) && retorno.data.length > 0) {
+            let listaHTML = '';
+
+            retorno.data.forEach(notificacao => {
+                // Define uma cor diferente se for redefinição de senha
+                const corAlerta = notificacao.titulo.includes('Redefinição') ? 'alert-danger' : 'alert-warning';
+                
+                listaHTML += `
+                    <div class="alert ${corAlerta} mb-2 shadow-sm" role="alert" style="border-left: 5px solid darkred;">
+                        <div class="d-flex justify-content-between">
+                            <strong><i class="bi bi-exclamation-triangle-fill me-2"></i>${notificacao.titulo}</strong>
+                            <small class="text-muted">${notificacao.data_envio}</small>
+                        </div>
+                        <p class="mb-0 mt-1" style="font-size: 0.9rem;">${notificacao.mensagem}</p>
+                    </div>
+                `;
+            });
+
+            // 3. Substitui o texto "Nenhuma notificação" pela lista real
+            container.innerHTML = listaHTML;
+
+        } else {
+            container.innerHTML = '<p class="text-muted">Nenhuma notificação encontrada para sua conta.</p>';
+        }
+
+    } catch (erro) {
+        console.error("Erro ao processar notificações:", erro);
+        container.innerHTML = '<p class="text-danger">Erro ao carregar notificações.</p>';
+    }
+}
+
 
   async function carregarPrazoAtual() {
     const input = document.getElementById('input-dias-prazo');
@@ -208,7 +254,9 @@ async function salvarPrazo() {
 
 
 // DOM CONTENT
+
 document.addEventListener('DOMContentLoaded', function() {
+    carregarMinhasNotificacoesUsuario();
     carregarPedidosExpirados();
     carregarNotificacoesEnviadas(); 
     carregarAnunciosGlobais();
@@ -244,12 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // DOMContentLoaded (só inicialização)
-    document.addEventListener('DOMContentLoaded', function() {
-        carregarAnunciosGlobais();
-        carregarMinhasNotificacoes();
-    });
-        });    
 
     // // DOMContentLoaded (só inicialização)
     // document.addEventListener('DOMContentLoaded', function() {
@@ -263,4 +305,10 @@ document.addEventListener('DOMContentLoaded', function() {
             salvarPrazo();
         }
     });
+// No final do seu notificacoes.js
+    window.addEventListener('load', function() {
+    // Dá um fôlego de 200ms para outros scripts terminarem de "limpar" a tela
+    setTimeout(carregarMinhasNotificacoesUsuario, 200);
+    });
+});
 
