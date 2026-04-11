@@ -69,8 +69,12 @@ if (!$stmt_ins->execute()) {
 }
 $stmt_ins->close();
 
-// contrói o link de recuperação
-$base_url = "http://localhost/php/Printly/public"; 
+// monta o link automaticamente
+$protocolo = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host      = $_SERVER['HTTP_HOST'];
+$script    = $_SERVER['SCRIPT_NAME'];
+$base_url  = $protocolo . '://' . $host . preg_replace('/\/app\/.*/', '/public', $script);
+
 $link = $base_url . "/index.php?rota=redefinir-senha&token=" . $token;
 
 // envia o email de recuperação pela biblioteca phpmailer utilizando o gmail
