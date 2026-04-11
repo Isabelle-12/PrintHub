@@ -78,18 +78,18 @@ function salvarAlteracoesFabricante() {
     fd.append("tipo_perfil", document.getElementById("tipo_perfil").value);
     
 
-    
-    if (perfilInput) {
-        fd.append("tipo_perfil", perfilInput.value);
-    }
+
     const email = document.getElementById("email").value;
     if (!email.includes("@")) {
         alert("E-mail inválido.");
         return;
     }
 
-    fetch("../app/controllers/admin/editar_fabricante.php", { method: "POST", body: fd, credentials: 'same-origin'})
-        .then(resp => resp.json())
+    fetch("../app/controllers/admin/editar_fabricante.php", { 
+        method: "POST", 
+        body: fd, 
+        credentials: 'same-origin'
+    }).then(resp => resp.json())
         .then(res => {
             if (res.status === "ok") {
                 alert("Fabricante atualizado com sucesso!");

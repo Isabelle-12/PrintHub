@@ -55,8 +55,6 @@ function salvarAlteracoes() {
     const cidade = document.getElementById("cidade").value;
     const estado = document.getElementById("estado").value;
     const tipo_perfil = document.getElementById("tipo_perfil").value;
-    const nova_senha = document.getElementById("nova_senha").value;
-    const confirmar_senha = document.getElementById("confirmar_senha").value;
 
     if (!email.includes("@")) {
         alert("O e-mail deve conter @");
@@ -69,10 +67,6 @@ function salvarAlteracoes() {
         return;
     }
 
-    if (nova_senha && nova_senha !== confirmar_senha) {
-        alert("As senhas não coincidem!");
-        return;
-    }
 
     const fd = new FormData();
     fd.append("id", id);
@@ -85,7 +79,7 @@ function salvarAlteracoes() {
     fd.append("cidade", cidade);
     fd.append("estado", estado);
     fd.append("tipo_perfil", tipo_perfil);
-    fd.append("nova_senha", nova_senha);
+
 
     fetch("../app/controllers/admin/editar_usuarios.php", { method: "POST", body: fd, credentials: 'same-origin'})
         .then(resp => resp.json())

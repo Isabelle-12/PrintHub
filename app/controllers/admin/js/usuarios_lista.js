@@ -185,6 +185,7 @@ function verPerfil(usuario) {
         <p><strong>Email:</strong> ${usuario.email}</p>
         <p><strong>Senha:</strong> ${usuario.senha}</p>
         <p><strong>Telefone:</strong> ${usuario.telefone}</p>
+        <p><strong>Documento:</strong> ${usuario.documento || 'Não informado'}</p>
         <p><strong>CEP:</strong> ${usuario.cep}</p>
         <p><strong>Cidade:</strong> ${usuario.cidade}</p>
         <p><strong>Estado:</strong> ${usuario.estado}</p>
@@ -223,6 +224,7 @@ function verPerfilAdministrador(administrador) {
         <p><strong>Email:</strong> ${administrador.email}</p>
         <p><strong>Senha:</strong> ${administrador.senha}</p>
         <p><strong>Telefone:</strong> ${administrador.telefone}</p>
+        <p><strong>Documento:</strong> ${administrador.documento || 'Não informado'}</p>
         <p><strong>CEP:</strong> ${administrador.cep}</p>
         <p><strong>Cidade:</strong> ${administrador.cidade}</p>
         <p><strong>Estado:</strong> ${administrador.estado}</p>

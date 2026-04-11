@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 perfil: 'ADMIN'
             };
             const senha = document.getElementById("senha").value;
-            const senhaErro = document.getElementById("senha-erro");
+            const senhaErro = document.getElementById("senhaError");
             const confirmar_senha = document.getElementById("confirmar_senha").value;
             const telefone = document.getElementById("telefone").value;
             const cep = document.getElementById("cep").value;
