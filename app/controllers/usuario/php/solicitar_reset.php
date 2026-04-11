@@ -1,6 +1,9 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-header("Content-type: application/json; charset=utf-8");
+header('Content-Type: application/json');
 
 include_once(__DIR__ . '/../../../../config/conexao.php');
 
@@ -16,7 +19,10 @@ require __DIR__ . '/../../../../vendor/PHPMailer/src/SMTP.php';
 $retorno = ['status' => 'nok', 'mensagem' => 'Erro interno', 'data' => []];
 
 if (!$conexao) {
-    echo json_encode(['status' => 'nok', 'mensagem' => 'Erro de conexão com o banco']);
+    echo json_encode([
+        "status" => "nok",
+        "mensagem" => "Erro na conexão com o banco"
+    ]);
     exit;
 }
 
@@ -30,6 +36,10 @@ $email = trim($_POST['email']);
 
 // verifica se o email esta no banco de dados
 $stmt = $conexao->prepare("SELECT id FROM usuarios WHERE email = ? AND status != 'BANIDO'");
+if (!$stmt) {
+    echo json_encode(['status' => 'nok', 'mensagem' => 'Erro no prepare']);
+    exit;
+}
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $resultado = $stmt->get_result();
@@ -78,11 +88,19 @@ $base_url  = $protocolo . '://' . $host . preg_replace('/\/app\/.*/', '/public',
 $link = $base_url . "/index.php?rota=redefinir-senha&token=" . $token;
 
 // envia o email de recuperação pela biblioteca phpmailer utilizando o gmail
+
 try {
     $mail = new PHPMailer(true); // o true ativa exceções para capturar erros
 
     // configuração do servidor SMTP do gmail
     $mail->isSMTP();
+    $mail->SMTPOptions = [
+    'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true,
+        ],
+    ];
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'pedrobfracaro@gmail.com';   // - email que vai enviar link para recuperação da senha
@@ -118,14 +136,20 @@ try {
     $mail->AltBody = "Acesse o link para redefinir sua senha: {$link}\n\nVálido por 1 hora.";
 
     $mail->send();
-
     $conexao->close();
-    echo json_encode(['status' => 'ok', 'mensagem' => 'Solicitação recebida.']);
+
+    echo json_encode([
+        'status' => 'ok',
+        'mensagem' => 'Solicitação recebida.'
+    ]);
+    exit;
 
 } catch (Exception $e) {
     // se o envio falhar, loga o erro mas não expõe detalhes ao usuário
-    error_log("Erro ao enviar e-mail: " . $mail->ErrorInfo);
     $conexao->close();
-    // ainda retorna ok pois o token foi salvo 
-    echo json_encode(['status' => 'ok', 'mensagem' => 'Solicitação recebida.']);
+    echo json_encode([
+    'status'  => 'nok', 
+    'mensagem' => 'Erro ao enviar e-mail: ' . $mail->ErrorInfo
+    ]);
+    exit;
 }
