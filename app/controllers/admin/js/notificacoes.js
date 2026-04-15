@@ -5,7 +5,7 @@ async function carregarPedidosExpirados() {
     container.innerHTML = '<p class="text-muted">Carregando...</p>';
 
     const resposta = await fetch('../app/controllers/admin/listar_pedidos_expirados.php');
-    const retorno  = await resposta.json();
+    const retorno = await resposta.json();
 
     if (retorno.status === 'ok' && retorno.data.length > 0) {
         let itens = '';
@@ -20,7 +20,7 @@ async function carregarPedidosExpirados() {
                          &bull; Prazo: ${p.prazo_pedido} &bull; Status: ${p.status}       
                          </small>
                     </div>  
-                    <button class="btn btn-sm btn-primary" onclick="notificarAtraso(${p.id}, '${p.cliente_email}', '${p.maker_email}')">
+                    <button class="btn btn-sm btn-primary" onclick="notificarAtraso(${p.id})">
                         Notificar
                     </button>
                 </div>
@@ -32,26 +32,18 @@ async function carregarPedidosExpirados() {
     }
 }
 
-async function notificarAtraso(pedidoId, emailCliente,emailMaker    ) {
-    const mensagem = 'Seu pedido #' + pedidoId + ' está com prazo expirado. Entre em contato para mais detalhes.';
-
-    const respostaC = await fetch('../app/controllers/admin/enviar_notificacao_atraso.php', {
+async function notificarAtraso(pedidoId) {
+    const resposta = await fetch('../app/controllers/admin/enviar_notificacao_atraso.php', {
         method: 'POST',
-        body: new URLSearchParams({ pedido_id: pedidoId, email_destino: emailCliente, mensagem: mensagem })
+        body: new URLSearchParams({ pedido_id: pedidoId })
     });
-    const retornoC = await respostaC.json();
+    const retorno = await resposta.json();
 
-    const respostaM = await fetch('../app/controllers/admin/enviar_notificacao_atraso.php', {
-        method: 'POST',
-        body: new URLSearchParams({ pedido_id: pedidoId, email_destino: emailMaker, mensagem: mensagem })
-    });
-    const retornoM = await respostaM.json();
-
-    if (retornoC.status === 'ok' && retornoM.status === 'ok') {
+    if (retorno.status === 'ok') {
         alert('Notificações enviadas para cliente e fabricante.');
         carregarNotificacoesEnviadas();
     } else {
-        alert(retornoC.status !== 'ok' ? retornoC.mensagem : retornoM.mensagem);
+        alert(retorno.mensagem);
     }
 }
 
@@ -90,7 +82,7 @@ async function carregarNotificacoesEnviadas() {
     container.innerHTML = '<p class="text-muted">Carregando...</p>';
 
     const resposta = await fetch('../app/controllers/admin/listar_notificacoes_enviadas.php');
-    const retorno  = await resposta.json();
+    const retorno = await resposta.json();
 
     if (retorno.status === 'ok' && retorno.data.length > 0) {
         let itens = '';
@@ -122,7 +114,7 @@ async function retratar(id) {
 
     const resposta = await fetch('../app/controllers/admin/retratar_notificacao.php', {
         method: 'POST',
-        body:   new URLSearchParams({ id: id })
+        body: new URLSearchParams({ id: id })
     });
     const retorno = await resposta.json();
 
@@ -139,13 +131,13 @@ async function carregarAnunciosGlobais() {
     if (!container) return;
 
     const resposta = await fetch('../app/controllers/admin/listar_anuncios_ativos.php');
-    const retorno  = await resposta.json();
+    const retorno = await resposta.json();
 
     if (retorno.status === 'ok' && retorno.data.length > 0) {
         let a = retorno.data[0];
-        document.getElementById('banner-titulo').textContent   = a.titulo;
+        document.getElementById('banner-titulo').textContent = a.titulo;
         document.getElementById('banner-mensagem').textContent = a.mensagem;
-        document.getElementById('banner-periodo').textContent  = a.data_inicio + ' até ' + a.data_fim;
+        document.getElementById('banner-periodo').textContent = a.data_inicio + ' até ' + a.data_fim;
         container.classList.remove('d-none');
     }
 }
@@ -157,7 +149,7 @@ async function carregarMinhasNotificacoes() {
     container.innerHTML = '<p class="text-muted">Carregando...</p>';
 
     const resposta = await fetch('../app/controllers/admin/carregar_notif.php');
-    const retorno  = await resposta.json();
+    const retorno = await resposta.json();
 
     if (retorno.status === 'ok' && retorno.data.length > 0) {
         let itens = '';
@@ -172,6 +164,7 @@ async function carregarMinhasNotificacoes() {
             `;
         }
         container.innerHTML = itens;
+        console.log("ADMIN carregando");
     } else {
         container.innerHTML = '<p class="text-success">Nenhuma notificação pendente.</p>';
     }
@@ -197,21 +190,21 @@ async function carregarMinhasNotificacoesUsuario() {
             retorno.data.forEach(notificacao => {
                 // Define uma cor diferente se for redefinição de senha
                 const corAlerta = notificacao.titulo.includes('Redefinição') ? 'alert-danger' : 'alert-warning';
-                
+
                 listaHTML += `
-                    <div class="alert ${corAlerta} mb-2 shadow-sm" role="alert" style="border-left: 5px solid darkred;">
-                        <div class="d-flex justify-content-between">
-                            <strong><i class="bi bi-exclamation-triangle-fill me-2"></i>${notificacao.titulo}</strong>
-                            <small class="text-muted">${notificacao.data_envio}</small>
+                        <div class="alert ${corAlerta} mb-2 shadow-sm" role="alert" style="border-left: 5px solid darkred;">
+                            <div class="d-flex justify-content-between">
+                                <strong><i class="bi bi-exclamation-triangle-fill me-2"></i>${notificacao.titulo}</strong>
+                                <small class="text-muted">${notificacao.data_envio}</small>
+                            </div>
+                            <p class="mb-0 mt-1" style="font-size: 0.9rem;">${notificacao.mensagem}</p>
                         </div>
-                        <p class="mb-0 mt-1" style="font-size: 0.9rem;">${notificacao.mensagem}</p>
-                    </div>
-                `;
+                    `;
             });
 
             // 3. Substitui o texto "Nenhuma notificação" pela lista real
             container.innerHTML = listaHTML;
-
+            console.log("USUARIO carregando");
         } else {
             container.innerHTML = '<p class="text-muted">Nenhuma notificação encontrada para sua conta.</p>';
         }
@@ -223,7 +216,7 @@ async function carregarMinhasNotificacoesUsuario() {
 }
 
 
-  async function carregarPrazoAtual() {
+async function carregarPrazoAtual() {
     const input = document.getElementById('input-dias-prazo');
     if (!input) return;
 
@@ -241,7 +234,7 @@ async function carregarMinhasNotificacoesUsuario() {
 
 async function salvarPrazo() {
     const dias = document.getElementById('input-dias-prazo').value;
-    const msg  = document.getElementById('msg-prazo');
+    const msg = document.getElementById('msg-prazo');
 
     const resposta = await fetch('../app/controllers/admin/config_prazo.php', {
         method: 'POST',
@@ -252,34 +245,50 @@ async function salvarPrazo() {
     msg.innerHTML = `<div class="alert ${retorno.status === 'ok' ? 'alert-success' : 'alert-danger'} py-1">${retorno.mensagem}</div>`;
 }
 
+async function verificarUsuarioTipoNotif() {
+    const resp = await fetch("../config/verificar.php");
+    const dados = await resp.json();
+
+    if (!dados.logado) {
+        alert("Você precisa estar logado!");
+        window.location.href = "index.php?rota=login";
+        return;
+    }
+
+    // 👇 só decide qual função chamar
+    if (dados.tipos === "ADMIN") {
+        carregarMinhasNotificacoes();
+    } else {
+        carregarMinhasNotificacoesUsuario();
+    }
+}
 
 // DOM CONTENT
 
-document.addEventListener('DOMContentLoaded', function() {
-    carregarMinhasNotificacoesUsuario();
+document.addEventListener('DOMContentLoaded', function () {
+    verificarUsuarioTipoNotif();
     carregarPedidosExpirados();
-    carregarNotificacoesEnviadas(); 
+    carregarNotificacoesEnviadas();
     carregarAnunciosGlobais();
-    carregarMinhasNotificacoes();
 
 
     const formManutencao = document.getElementById('form-manutencao');
     if (formManutencao) {
-        formManutencao.addEventListener('submit', async function(event) {
+        formManutencao.addEventListener('submit', async function (event) {
             event.preventDefault();
 
-            const titulo      = document.getElementById('titulo').value;
-            const mensagem    = document.getElementById('mensagem').value;
+            const titulo = document.getElementById('titulo').value;
+            const mensagem = document.getElementById('mensagem').value;
             const data_inicio = document.getElementById('data_inicio').value;
-            const data_fim    = document.getElementById('data_fim').value;
+            const data_fim = document.getElementById('data_fim').value;
 
             const resposta = await fetch('../app/controllers/admin/agendar_manutencao.php', {
                 method: 'POST',
-                body:   new URLSearchParams({
-                    titulo:      titulo,
-                    mensagem:    mensagem,
+                body: new URLSearchParams({
+                    titulo: titulo,
+                    mensagem: mensagem,
                     data_inicio: data_inicio,
-                    data_fim:    data_fim
+                    data_fim: data_fim
                 })
             });
             const retorno = await resposta.json();
@@ -305,10 +314,10 @@ document.addEventListener('DOMContentLoaded', function() {
             salvarPrazo();
         }
     });
-// No final do seu notificacoes.js
-    window.addEventListener('load', function() {
-    // Dá um fôlego de 200ms para outros scripts terminarem de "limpar" a tela
-    setTimeout(carregarMinhasNotificacoesUsuario, 200);
-    });
+    // // No final do seu notificacoes.js
+    // window.addEventListener('load', function () {
+    //     // Dá um fôlego de 200ms para outros scripts terminarem de "limpar" a tela
+    //     setTimeout(carregarMinhasNotificacoesUsuario, 200);
+    // });
 });
 
