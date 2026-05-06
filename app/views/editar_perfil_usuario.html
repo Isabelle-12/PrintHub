@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - Printly</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --printly-primary: #412746;
+            --printly-primary-dark: #7a3077;
+            --printly-accent: #7b1385;
+            --printly-light: #f0cef5;
+            --printly-surface: #ffffff;
+            --printly-bg: #fff5fe;
+            --printly-text: #4b1b4b;
+            --printly-muted: #9e939e;
+            --printly-border: #c2b9c28c;
+            --printly-shadow: 0 2px 12px rgba(229, 70, 181, 0.08);
+            --printly-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--printly-bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--printly-text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--printly-primary) 0%, var(--printly-primary-dark) 100%) !important;
+            padding: 0.75rem 0;
+            box-shadow: 0 2px 16px rgba(224, 70, 229, 0.25);
+        }
+
+        .navbar-brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: #fff !important;
+        }
+
+        .navbar .nav-link {
+            color: rgba(255, 255, 255, 0.82) !important;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.45rem 0.9rem !important;
+            border-radius: 8px;
+            transition: background 0.18s, color 0.18s;
+        }
+
+        .navbar .nav-link:hover,
+        .navbar .nav-link.active {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff !important;
+        }
+
+        #sair {
+            background: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        #sair:hover {
+            background: rgba(255, 255, 255, 0.22);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--printly-border);
+        }
+
+        .page-header h4 {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .page-header p {
+            font-size: 0.85rem;
+            color: var(--printly-muted);
+            margin: 2px 0 0;
+        }
+
+        .card {
+            border: 1px solid var(--printly-border);
+            border-radius: var(--printly-radius);
+            box-shadow: var(--printly-shadow);
+            background: var(--printly-surface);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: var(--printly-light);
+            border-bottom: 1px solid var(--printly-border);
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h5 {
+            margin: 0;
+            font-size: 0.975rem;
+            font-weight: 600;
+            color: var(--printly-primary);
+        }
+
+        .card-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: var(--printly-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-icon i {
+            color: #fff;
+            font-size: 0.85rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--printly-text);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border: 1px solid var(--printly-border);
+            padding: 0.65rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--printly-primary-dark);
+            box-shadow: 0 0 0 0.15rem rgba(122, 48, 119, 0.18);
+        }
+
+        .btn-printly {
+            background: var(--printly-primary);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            font-size: 0.9rem;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-printly:hover {
+            background: var(--printly-primary-dark);
+            color: #fff;
+        }
+
+        .btn-cancelar {
+            background: #e8e0e8;
+            color: var(--printly-primary);
+            border-radius: 8px;
+            padding: 0.55rem 1rem;
+            font-size: 0.9rem;
+            border: none;
+            text-decoration: none;
+        }
+
+        .btn-cancelar:hover {
+            background: #d8ccd8;
+            color: var(--printly-primary);
+        }
+
+        .foto-preview {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 1rem;
+        }
+
+        .foto-perfil {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--printly-light);
+            background: #fff;
+        }
+
+        .texto-ajuda {
+            font-size: 0.8rem;
+            color: var(--printly-muted);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 576px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .foto-preview {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body data-acesso="CLIENTE,MAKER,ADMIN">
+
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.php?rota=usuario-painel">Printly</a>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.php?rota=perfil-usuario">
+                            <i class="bi bi-person-circle me-1"></i>Perfil
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php?rota=usuario-painel">
+                            <i class="bi bi-grid me-1"></i>Painel do Usuário
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-sm" type="button" id="sair">
+                            <i class="bi bi-door-open"></i>
+                        </button>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div class="page-header">
+            <div>
+                <h4>Editar Perfil</h4>
+                <p>Atualize suas informações pessoais e dados de endereço</p>
+            </div>
+
+            <a href="index.php?rota=perfil-usuario" class="btn-cancelar">
+                <i class="bi bi-arrow-left me-1"></i>Voltar
+            </a>
+        </div>
+
+        <form id="formEditarPerfil" method="POST" enctype="multipart/form-data">
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="bi bi-image"></i>
+                    </div>
+                    <h5>Foto de Perfil</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="foto-preview">
+                        <img src="../assets/img/perfil-padrao.png" alt="Foto de perfil" class="foto-perfil" id="previewFoto">
+
+                        <div class="w-100">
+                            <label for="foto" class="form-label">Alterar foto</label>
+                            <input type="file" class="form-control" id="foto" name="foto" accept="image/*">
+                            <p class="texto-ajuda">Escolha uma imagem JPG, PNG ou WEBP.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <h5>Informações Pessoais</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="nome" class="form-label">Nome completo</label>
+                            <input type="text" class="form-control" id="nome" name="nome">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="telefone" name="telefone" maxlength="11">
+                            <p class="texto-ajuda">Digite apenas números.</p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="documento" class="form-label">Documento</label>
+                            <input type="text" class="form-control" id="documento" name="documento" maxlength="14">
+                            <p class="texto-ajuda">Digite apenas números.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h5>Endereço</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-4 mb-3">
+                            <label for="cep" class="form-label">CEP</label>
+                            <input type="text" class="form-control" id="cep" name="cep" maxlength="8">
+                            <p class="texto-ajuda">Digite apenas números.</p>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="cidade" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="estado" name="estado" maxlength="2">
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label for="endereco" class="form-label">Endereço completo</label>
+                            <input class="form-control" id="endereco" name="endereco" rows="3"></inpput>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="bi bi-lock"></i>
+                    </div>
+                    <h5>Alterar Senha</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="senha" class="form-label">Nova senha</label>
+                            <input type="password" class="form-control" id="senha" name="senha" placeholder="Deixe em branco para manter a atual">
+                            <p class="texto-ajuda">Mínimo 8 caracteres</p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="confirmarSenha" class="form-label">Confirmar nova senha</label>
+                            <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" placeholder="Confirme a nova senha">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mb-5">
+                <a href="index.php?rota=perfil-usuario" class="btn-cancelar">
+                    Cancelar
+                </a>
+
+                <button type="submit" class="btn-printly">
+                    <i class="bi bi-check-lg me-1"></i>Salvar Alterações
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <script>
+    async function carregarDadosPerfil() {
+            try {
+                const resposta = await fetch("/Printly/app/controllers/usuario/php/buscar_perfil.php");
+
+                const texto = await resposta.text();
+                console.log("RESPOSTA EDITAR PERFIL:", texto);
+
+                const dados = JSON.parse(texto);
+
+                if (dados.status !== "ok") {
+                    alert(dados.mensagem);
+                    window.location.href = "index.php?rota=login";
+                    return;
+                }
+
+                const usuario = dados.data;
+
+                if (usuario.foto_perfil) {
+                    document.getElementById("previewFoto").src = "/Printly/" + usuario.foto_perfil;
+                } else {
+                    document.getElementById("previewFoto").src = "/Printly/public/img/perfil-padrao.png";
+                }
+
+                document.getElementById("nome").value = usuario.nome || "";
+                document.getElementById("email").value = usuario.email || "";
+                document.getElementById("telefone").value = usuario.telefone || "";
+                document.getElementById("documento").value = usuario.documento || "";
+                document.getElementById("cep").value = usuario.cep || "";
+                document.getElementById("cidade").value = usuario.cidade || "";
+                document.getElementById("estado").value = usuario.estado || "";
+                document.getElementById("endereco").value = usuario.endereco || "";
+
+            } catch (erro) {
+                console.error("Erro ao carregar dados para edição:", erro);
+                alert("Erro ao carregar dados do perfil.");
+            }
+        }
+
+        carregarDadosPerfil();
+
+        const camposNumericos = document.querySelectorAll(".somente-numeros");
+
+        camposNumericos.forEach(function (campo) {
+            campo.addEventListener("input", function () {
+                campo.value = campo.value.replace(/\D/g, "");
+            });
+        });
+
+        const inputFoto = document.getElementById("foto");
+        const previewFoto = document.getElementById("previewFoto");
+
+        if (inputFoto && previewFoto) {
+            inputFoto.addEventListener("change", function () {
+                const arquivo = inputFoto.files[0];
+
+                if (arquivo) {
+                    previewFoto.src = URL.createObjectURL(arquivo);
+                }
+            });
+        }
+
+        document.getElementById("formEditarPerfil").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const senha = document.getElementById("senha").value.trim();
+        const confirmarSenha = document.getElementById("confirmarSenha").value.trim();
+
+        if (senha !== "" || confirmarSenha !== "") {
+            if (senha.length < 8) {
+                alert("Para alterar a senha, ela precisa ter no mínimo 8 caracteres.");
+                document.getElementById("senha").focus();
+                return;
+            }
+
+            if (senha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                document.getElementById("confirmarSenha").focus();
+                return;
+            }
+        }
+
+        const formData = new FormData(this);
+
+        try {
+            const resposta = await fetch("/Printly/app/controllers/usuario/php/atualizar_perfil_usuario.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const texto = await resposta.text();
+            console.log("RESPOSTA ATUALIZAR PERFIL:", texto);
+
+            const dados = JSON.parse(texto);
+
+            if (dados.status === "ok") {
+                alert(dados.mensagem);
+                window.location.href = "index.php?rota=perfil-usuario";
+            } else {
+                alert(dados.mensagem);
+            }
+
+        } catch (erro) {
+            console.error("Erro ao salvar perfil:", erro);
+            alert("Erro ao salvar alterações. Verifique o console.");
+        }
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../app/controllers/usuario/js/verif.js"></script>
+
+</body>
+
+</html>

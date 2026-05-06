@@ -212,78 +212,78 @@
             </div>
             <div class="card-body p-4">
 
-                <!-- Dados Pessoais -->
-                <div class="section-label">Dados Pessoais</div>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-6">
-                        <label for="nome" class="form-label">Nome <span class="obrigatorio">*</span></label>
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="email" class="form-label">E-mail <span class="obrigatorio">*</span></label>
-                        <input type="email" class="form-control" id="email" name="email"
-                            placeholder="exemplo@email.com">
-                    </div>
-                    <div class="col-md-6">
-                        <label for="senha" class="form-label">Senha <span class="obrigatorio">*</span></label>
-                        <input type="password" class="form-control" id="senha" name="senha" placeholder="••••••••" minlength="8">
-                        <small class="text-muted">Minimo de 8 caracteres</small>
-                        <span id="senha-erro" class="text-danger" style="font-size: 0.82rem; display: none;">A senha deve ter pelo menos 8 caracteres.</span>
+                    <!-- Dados Pessoais -->
+                    <div class="section-label">Dados Pessoais</div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label for="nome" class="form-label">Nome <span class="obrigatorio">*</span></label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">E-mail <span class="obrigatorio">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="exemplo@email.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="senha" class="form-label">Senha <span class="obrigatorio">*</span></label>
+                            <input type="password" class="form-control" id="senha" name="senha" placeholder="••••••••" minlength="8">
+                            <small class="text-muted">Minimo de 8 caracteres</small>
+                            <span id="senha-erro" class="text-danger" style="font-size: 0.82rem; display: none;">A senha deve ter pelo menos 8 caracteres.</span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="confirmar_senha" class="form-label">Confirmar Senha<span class="obrigatorio">*</span></label>
+                            <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" placeholder="••••••••">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="tel" class="form-control" id="telefone" name="telefone"
+                                placeholder="(00) 00000-0000">
+                        </div>
+                        <div class="col-md-6    ">
+                            <label for="documento" class="form-label">Documento</label>
+                            <input type="tel" class="form-control" id="documento" name="documento"
+                                placeholder="CPF ou CNPJ">
+                        </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="confirmar_senha" class="form-label">Confirmar Senha<span class="obrigatorio">*</span></label>
-                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" placeholder="••••••••">
+                    <!-- Endereço -->
+                    <div class="section-label">Endereço</div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3">
+                            <label for="cep" class="form-label">CEP</label>
+                            <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="cidade" class="form-label">Cidade</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="estado" class="form-label">Estado</label>
+                            <input type="text" class="form-control" id="estado" name="estado" placeholder="UF"
+                                maxlength="2">
+                        </div>
+                        <div class="col-md-">
+                            <label for="endereco" class="form-label">Endereço</label>
+                            <input type="text" class="form-control" id="endereco" name="endereco"
+                                placeholder="Rua, Avenida...">
+                        </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <label for="telefone" class="form-label">Telefone</label>
-                        <input type="tel" class="form-control" id="telefone" name="telefone"
-                            placeholder="(00) 00000-0000">
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="termos_uso">
+                        <label class="form-check-label" for="termos_uso">
+                            Eu li e concordo com os <a href="termos.php" target="_blank">Termos e Condições</a>.
+                        </label>
                     </div>
-                    <div class="col-md-6    ">
-                        <label for="documento" class="form-label">Documento</label>
-                        <input type="tel" class="form-control" id="documento" name="documento"
-                            placeholder="CPF ou CNPJ">
-                    </div>
-                </div>
 
-                <!-- Endereço -->
-                <div class="section-label">Endereço</div>
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3">
-                        <label for="cep" class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000">
-                    </div>
-                    <div class="col-md-5">
-                        <label for="cidade" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Cidade">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="estado" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" name="estado" placeholder="UF"
-                            maxlength="2">
-                    </div>
-                    <div class="col-md-">
-                        <label for="endereco" class="form-label">Endereço</label>
-                        <input type="text" class="form-control" id="endereco" name="endereco"
-                            placeholder="Rua, Avenida...">
-                    </div>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="termos_uso">
-                    <label class="form-check-label" for="termos_uso">
-                        Eu li e concordo com os <a href="termos.php" target="_blank">Termos e Condições</a>.
-                    </label>
-                </div>
-
-                <form>
-                    <div class="form-actions">
-                        <a href="index.php?rota=home" class="btn-secondary-custom">Voltar</a>
-                        <button id="enviar" type="submit" class="btn-primary-custom">Cadastrar</button>
-                        <!-- <button id="teste" type="button" class="btn-primary-custom">Teste</button> -->
-                    </div>
-                </form>
+                    <form>
+                        <div class="form-actions">
+                            <a href="index.php?rota=home" class="btn-secondary-custom">Voltar</a>
+                            <button id="enviar" type="submit" class="btn-primary-custom">Cadastrar</button>
+                            <!-- <button id="teste" type="button" class="btn-primary-custom">Teste</button> -->
+                        </div>
+                    </form>
 
             </div>
         </div>

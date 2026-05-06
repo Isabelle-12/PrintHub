@@ -296,3 +296,6 @@ ALTER TABLE mensagens DROP FOREIGN KEY mensagens_ibfk_3; -- Destinatario
 ALTER TABLE mensagens 
     ADD CONSTRAINT fk_mensagens_remetente FOREIGN KEY (remetente_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     ADD CONSTRAINT fk_mensagens_destinatario FOREIGN KEY (destinatario_id) REFERENCES usuarios(id) ON DELETE CASCADE;
+
+ALTER TABLE usuarios 
+    ADD COLUMN foto_perfil VARCHAR(255) NULL AFTER endereco;
