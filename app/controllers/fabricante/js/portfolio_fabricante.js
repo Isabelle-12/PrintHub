@@ -188,13 +188,127 @@ function preencherMateriais(materiais) {
     area.innerHTML = "";
 
     materiais.forEach((mat) => {
+        const preco = parseFloat(mat.preco_por_grama || 0).toLocaleString('pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
         area.innerHTML += `
-            <div class="portfolio-item">
-                <strong>${mat.tipo_material || "Material não informado"}</strong><br>
-                <small>Preço por grama: R$ ${mat.preco_por_grama || "0,00"}</small>
+            <div class="portfolio-item" id="mat-card-${mat.id}">
+                <div class="d-flex justify-content-between align-items-start">
+                    <strong>${mat.tipo_material || "Material não informado"}</strong>
+                    <div>
+                        <button class="btn-imp-acao btn-imp-editar" title="Editar"
+                            onclick="abrirModalMaterial(${JSON.stringify(mat).replace(/"/g, '&quot;')})">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn-imp-acao btn-imp-excluir" title="Excluir"
+                            onclick="excluirMaterial(${mat.id})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <small>Preço por grama: R$ ${preco}</small>
             </div>
         `;
     });
+}
+
+// Mapeamento de tipos de impressora → materiais compatíveis
+const materiaisPorTipo = {
+    FDM: ['PLA', 'ABS', 'PETG', 'TPU', 'Nylon', 'ASA', 'PVA'],
+    SLS: ['Nylon (Pó)', 'Poliestireno', 'Alumida'],
+    SLA: ['Resina'],
+    DLP: ['Resina']
+};
+
+// Lê os tipos de impressora dos badges já renderizados no DOM
+function obterMaterialisDisponiveisDasImpressoras() {
+    const tiposSet = new Set();
+    document.querySelectorAll("#portfolioImpressoras .badge").forEach(b => {
+        tiposSet.add(b.textContent.trim());
+    });
+
+    const materiaisSet = new Set();
+    tiposSet.forEach(tipo => {
+        (materiaisPorTipo[tipo] || []).forEach(m => materiaisSet.add(m));
+    });
+
+    return [...materiaisSet];
+}
+
+// Abre o modal para adicionar (sem argumento) ou editar (com objeto material)
+function abrirModalMaterial(mat = null) {
+    document.getElementById("modalMatId").value    = mat ? mat.id : "";
+    document.getElementById("modalMatPreco").value = mat ? (mat.preco_por_grama || "") : "";
+
+    // Monta opções do select com base nos tipos de impressora cadastrados
+    const select    = document.getElementById("modalMatTipo");
+    const disponiveis = obterMaterialisDisponiveisDasImpressoras();
+    const valorAtual  = mat ? mat.tipo_material : "";
+
+    if (disponiveis.length === 0) {
+        select.innerHTML = `<option value="">Cadastre uma impressora primeiro</option>`;
+    } else {
+        select.innerHTML = `<option value="">Selecione o material...</option>` +
+            disponiveis.map(m =>
+                `<option value="${m}" ${m === valorAtual ? 'selected' : ''}>${m}</option>`
+            ).join('');
+
+        // Se o material atual não está na lista (cadastrado antes), adiciona mesmo assim
+        if (valorAtual && !disponiveis.includes(valorAtual)) {
+            select.innerHTML += `<option value="${valorAtual}" selected>${valorAtual}</option>`;
+        }
+    }
+
+    document.getElementById("modalMaterialTitle").textContent = mat ? "Editar Material" : "Adicionar Material";
+    new bootstrap.Modal(document.getElementById("modalMaterial")).show();
+}
+
+async function salvarMaterial() {
+    const id    = document.getElementById("modalMatId").value;
+    const tipo  = document.getElementById("modalMatTipo").value.trim();
+    const preco = document.getElementById("modalMatPreco").value.trim();
+
+    if (!tipo)  { alert("Selecione o tipo de material."); return; }
+    if (!preco || parseFloat(preco) <= 0) { alert("Informe um preço por grama válido."); return; }
+
+    const url = id
+        ? "../app/controllers/fabricante/php/editar_material.php"
+        : "../app/controllers/fabricante/php/adicionar_material.php";
+
+    const resp = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, tipo, preco })
+    });
+
+    const dados = await resp.json();
+
+    if (dados.status === "ok") {
+        bootstrap.Modal.getInstance(document.getElementById("modalMaterial")).hide();
+        carregarPortfolioMaker();
+    } else {
+        alert("Erro: " + dados.mensagem);
+    }
+}
+
+async function excluirMaterial(id) {
+    if (!confirm("Tem certeza que deseja excluir este material?")) return;
+
+    const resp = await fetch("../app/controllers/fabricante/php/excluir_material.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+    });
+
+    const dados = await resp.json();
+
+    if (dados.status === "ok") {
+        carregarPortfolioMaker();
+    } else {
+        alert("Erro: " + dados.mensagem);
+    }
 }
 
 function preencherCarousel(fotos) {

@@ -987,9 +987,14 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <h6 class="portfolio-subtitulo">
-                                    <i class="bi bi-box-seam me-1"></i>Materiais
-                                </h6>
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <h6 class="portfolio-subtitulo mb-0">
+                                        <i class="bi bi-box-seam me-1"></i>Materiais
+                                    </h6>
+                                    <button class="btn-add-impressora" onclick="abrirModalMaterial()">
+                                        <i class="bi bi-plus"></i> Adicionar
+                                    </button>
+                                </div>
                                 <div id="portfolioMateriais" class="portfolio-lista">
                                     <p class="text-muted mb-0">Nenhum material cadastrado.</p>
                                 </div>
@@ -1020,6 +1025,47 @@
             </div>
 
             <!-- crud impressora -->
+            <!-- Modal Material -->
+            <div class="modal fade" id="modalMaterial" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="border-radius:12px; border:1px solid var(--printly-border);">
+                        <div class="modal-header"
+                            style="background:var(--printly-light); border-bottom:1px solid var(--printly-border);">
+                            <h5 class="modal-title" id="modalMaterialTitle"
+                                style="font-family:'Syne',sans-serif; color:var(--printly-primary); font-weight:700;">
+                                Material</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <input type="hidden" id="modalMatId">
+                            <div class="mb-3">
+                                <label class="modal-label">Tipo de Material</label>
+                                <select id="modalMatTipo" class="form-control">
+                                    <option value="">Selecione o material...</option>
+                                </select>
+                                <small class="text-muted" style="font-size:0.78rem;">
+                                    Baseado nos tipos de impressora cadastrados.
+                                </small>
+                            </div>
+                            <div class="mb-1">
+                                <label class="modal-label">Preço por grama (R$)</label>
+                                <input type="number" step="0.01" min="0.01" id="modalMatPreco"
+                                    class="form-control" placeholder="ex: 0.15">
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top:1px solid var(--printly-border);">
+                            <button type="button" class="btn btn-sm btn-secondary"
+                                data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-sm" id="btnSalvarMaterial"
+                                style="background:var(--printly-primary);color:#fff;font-weight:600;"
+                                onclick="salvarMaterial()">
+                                <i class="bi bi-check-lg me-1"></i>Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalImpressora" tabindex="-1">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content" style="border-radius:12px; border:1px solid var(--printly-border);">
