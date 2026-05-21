@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
             cidade:         document.getElementById("cidade").value,
             estado:         document.getElementById("estado").value,
             endereco:       document.getElementById("endereco").value,
-            nome_cachorro:  document.getElementById("nome_cachorro").value,
             perfil:         "CLIENTE"
         };
 

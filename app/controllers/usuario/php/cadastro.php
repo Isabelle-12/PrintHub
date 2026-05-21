@@ -16,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $cidade        = $_POST['cidade'] ?? '';
     $estado        = $_POST['estado'] ?? '';
     $endereco      = $_POST['endereco'] ?? '';
-    $nome_cachorro = $_POST['nome_cachorro'] ?? '';
     $perfil        = $_POST['perfil'] ?? 'CLIENTE';
 
     // 1. Validar se usuário já existe
@@ -32,12 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // 2. Inserir todos os campos
     $sql = "INSERT INTO usuarios
-            (nome, email, senha, tipo_perfil, documento, telefone, cep, cidade, estado, endereco, nome_cachorro, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVO')";
+            (nome, email, senha, tipo_perfil, documento, telefone, cep, cidade, estado, endereco, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'ATIVO')";
 
     $stmt = $conexao->prepare($sql);
-    $stmt->bind_param("sssssssssss",
-        $nome, $email, $senha, $perfil, $documento, $telefone, $cep, $cidade, $estado, $endereco, $nome_cachorro
+    $stmt->bind_param("ssssssssss",
+        $nome, $email, $senha, $perfil, $documento, $telefone, $cep, $cidade, $estado, $endereco
     );
 
     if ($stmt->execute()) {
