@@ -222,60 +222,91 @@
                 </div>
                 <div class="modal-body p-4">
 
+                    <!-- Foto de referência (capa) -->
+                    <div id="mg-capa-wrap" style="display:none;margin-bottom:1.25rem;">
+                        <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem"><i class="bi bi-image me-1"></i>Foto de Referência do Cliente</div>
+                        <img id="mg-capa-img" src="" alt="Foto de referência"
+                            style="max-width:100%;max-height:280px;border-radius:10px;border:1px solid var(--pbd);object-fit:contain;display:block;">
+                    </div>
+
+                    <!-- Arquivo 3D para download -->
+                    <div id="mg-arquivo-wrap" style="display:none;margin-bottom:1.25rem;">
+                        <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem"><i class="bi bi-file-earmark-code me-1"></i>Arquivo 3D do Projeto</div>
+                        <a id="mg-arquivo-link" href="#" download
+                            style="display:inline-flex;align-items:center;gap:12px;background:var(--roc);border:1.5px solid var(--cb);border-radius:10px;padding:12px 16px;text-decoration:none;width:100%;">
+                            <i class="bi bi-file-earmark-code" style="font-size:1.6rem;color:var(--rm)"></i>
+                            <div style="flex:1;min-width:0;">
+                                <div class="mg-arq-nome" style="font-weight:700;color:var(--pp);font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></div>
+                                <div class="mg-arq-format" style="font-size:.78rem;color:var(--pm);margin-top:2px;"></div>
+                            </div>
+                            <span style="background:var(--rm);color:#fff;padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:600;white-space:nowrap;"><i class="bi bi-download me-1"></i>Download</span>
+                        </a>
+                    </div>
+
                     <!-- Dados do pedido -->
-                    <div class="row g-3 mb-4">
+                    <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <div style="background:var(--pl);border-radius:10px;padding:1rem">
+                            <div style="background:var(--pl);border-radius:10px;padding:1rem;height:100%">
                                 <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem">Projeto</div>
                                 <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--pp)" id="mg-nome-projeto">—</div>
+                                <div style="font-size:.82rem;color:var(--pm);margin-top:5px;line-height:1.5" id="mg-descricao"></div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div style="background:var(--pl);border-radius:10px;padding:1rem">
+                            <div style="background:var(--pl);border-radius:10px;padding:1rem;height:100%">
                                 <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem">Cliente</div>
                                 <div style="font-weight:600;color:var(--pp)" id="mg-cliente">—</div>
-                                <div style="font-size:.8rem;color:var(--pm)" id="mg-cliente-email">—</div>
+                                <div style="font-size:.82rem;color:var(--pm);margin-top:2px"><i class="bi bi-envelope me-1"></i><span id="mg-cliente-email"></span></div>
+                                <div style="font-size:.82rem;color:var(--pm);margin-top:2px"><i class="bi bi-telephone me-1"></i><span id="mg-cliente-tel"></span></div>
                             </div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Material</div>
-                            <div style="font-weight:600;font-size:.9rem;color:var(--pt);margin-top:3px" id="mg-material">—</div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Quantidade</div>
+                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Quantidade Total</div>
                             <div style="font-weight:600;font-size:.9rem;color:var(--pt);margin-top:3px" id="mg-qtd">—</div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Valor</div>
+                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Valor Total</div>
                             <div style="font-weight:700;font-size:.95rem;color:var(--pp);margin-top:3px" id="mg-valor">—</div>
                         </div>
                         <div class="col-6 col-md-3">
-                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Prazo</div>
+                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Prazo Desejado</div>
                             <div style="font-weight:600;font-size:.9rem;color:var(--pt);margin-top:3px" id="mg-prazo">—</div>
                         </div>
-                        <div class="col-12" id="mg-endereco-wrap">
+                        <div class="col-6 col-md-3">
+                            <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Volume / Peso Est.</div>
+                            <div style="font-size:.82rem;color:var(--pt);margin-top:3px"><span id="mg-volume">—</span> &middot; <span id="mg-peso">—</span></div>
+                        </div>
+                        <div class="col-12">
                             <div style="font-size:.75rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em">Endereço de Entrega</div>
                             <div style="font-size:.88rem;color:var(--pt);margin-top:3px" id="mg-endereco">—</div>
                         </div>
                     </div>
 
+                    <!-- Motivo de recusa -->
+                    <div id="mg-recusa-wrap" style="display:none;margin-bottom:1rem;">
+                        <div style="background:#fff5f5;border:1.5px solid #fecaca;border-radius:10px;padding:.85rem 1rem;">
+                            <div style="font-size:.75rem;font-weight:700;color:#dc2626;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem"><i class="bi bi-x-circle me-1"></i>Motivo da Recusa</div>
+                            <div style="font-size:.88rem;color:#7f1d1d" id="mg-motivo-recusa"></div>
+                        </div>
+                    </div>
+
+                    <hr style="border-color:var(--pbd)">
+
+                    <!-- Partes do pedido -->
+                    <div style="margin-bottom:1.25rem;">
+                        <div style="font-size:.8rem;font-weight:700;color:var(--pm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="bi bi-layers me-1"></i>Partes do Pedido</div>
+                        <div id="mg-partes"><p class="text-muted" style="font-size:.85rem">Carregando...</p></div>
+                    </div>
+
                     <hr style="border-color:var(--pbd)">
 
                     <!-- Atualizar status -->
-                    <div class="status-select-wrap mb-4">
+                    <div id="mg-secao-status" class="status-select-wrap mb-4">
                         <label><i class="bi bi-arrow-repeat me-1"></i>Atualizar Status do Pedido</label>
-                        <select class="status-select" id="mg-novo-status">
-                            <option value="AGUARDANDO_CONFIRMACAO">Aguardando Confirmação</option>
-                            <option value="ACEITO">Aceito</option>
-                            <option value="EM_PRODUCAO">Em Produção</option>
-                            <option value="CONCLUIDO">Concluído</option>
-                            <option value="ENTREGUE">Entregue</option>
-                            <option value="CANCELADO">Cancelado</option>
-                            <option value="NEGADO">Negado</option>
-                        </select>
+                        <select class="status-select" id="mg-novo-status"></select>
                         <div class="obs-wrap">
                             <label>Observação <span style="font-weight:400;color:var(--pm)">(opcional)</span></label>
-                            <textarea class="obs-input" id="mg-observacao" placeholder="Ex: Produto enviado via Correios, código de rastreio: ABC123"></textarea>
+                            <textarea class="obs-input" id="mg-observacao" placeholder="Ex: Pedido confirmado, previsão de entrega em 5 dias..."></textarea>
                         </div>
                     </div>
 
@@ -300,7 +331,7 @@
         </div>
     </div>
 
-    <!-- TOAST -->
+        <!-- TOAST -->
     <div class="toast-printly" id="toastGerenciar">
         <i class="bi bi-check-circle-fill" id="toast-icon"></i>
         <span id="toast-msg">Status atualizado com sucesso!</span>

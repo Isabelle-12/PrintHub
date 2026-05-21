@@ -10,13 +10,40 @@ if (!isset($_SESSION['id'])) {
 
 $makerId = (int) $_SESSION['id'];
 
-$sql = "SELECT id, nome_projeto, cliente_nome, cliente_email,
-               material_escolhido, quantidade, valor_total,
-               status, data_solicitacao, data_atualizacao,
-               prazo_pedido, endereco_entrega
-        FROM view_pedidos_completos
-        WHERE maker_id = ?
-        ORDER BY data_atualizacao DESC";
+// Busca dados completos incluindo arquivo 3D, imagem de capa, descrição, partes e telefone
+$sql = "SELECT
+            p.id,
+            p.status,
+            p.valor_total,
+            p.quantidade,
+            p.material_escolhido,
+            p.data_solicitacao,
+            p.data_atualizacao,
+            p.prazo_pedido,
+            p.endereco_entrega,
+            p.motivo_recusa,
+            p.arquivo_caminho   AS capa_path,
+
+            pr.id               AS projeto_id,
+            pr.nome_projeto,
+            pr.descricao,
+            pr.formato,
+            pr.arquivo_caminho  AS arquivo_3d,
+            pr.volume_estimado_cm3,
+            pr.peso_estimado_gramas,
+
+            c.id                AS cliente_id,
+            c.nome              AS cliente_nome,
+            c.email             AS cliente_email,
+            c.telefone          AS cliente_telefone,
+
+            (SELECT COUNT(*) FROM partes_pedido pp WHERE pp.pedido_id = p.id) AS total_partes
+
+        FROM pedidos p
+        JOIN projetos pr ON pr.id = p.projeto_id
+        JOIN usuarios c  ON c.id  = pr.cliente_id
+        WHERE p.maker_id = ?
+        ORDER BY p.data_atualizacao DESC";
 
 $stmt = $conexao->prepare($sql);
 if (!$stmt) {

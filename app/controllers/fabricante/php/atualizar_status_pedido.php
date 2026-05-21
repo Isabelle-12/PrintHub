@@ -21,11 +21,29 @@ if ($pedidoId <= 0 || !$novoStatus) {
     exit;
 }
 
-// Valores permitidos de status
-$statusPermitidos = ['AGUARDANDO_CONFIRMACAO', 'ACEITO', 'EM_PRODUCAO', 'CONCLUIDO', 'ENTREGUE', 'CANCELADO', 'NEGADO'];
-if (!in_array($novoStatus, $statusPermitidos)) {
-    echo json_encode(['status' => 'nok', 'mensagem' => 'Status inválido.']);
-    exit;
+// Mapa de transições permitidas por status atual
+// Garante que o maker só pode avançar o pedido em ordem lógica
+$transicoesPermitidas = [
+    'AGUARDANDO_CONFIRMACAO' => ['ACEITO', 'NEGADO'],
+    'ARQUIVO_VALIDADO'       => ['ACEITO', 'NEGADO'],
+    'ACEITO'                 => ['EM_PRODUCAO', 'NEGADO'],
+    'EM_PRODUCAO'            => ['CONCLUIDO'],
+    'CONCLUIDO'              => ['ENTREGUE'],
+    'ENTREGUE'               => [],
+    'NEGADO'                 => [],
+    'CANCELADO'              => [],
+];
+
+if (!array_key_exists($novoStatus, array_merge(...array_values($transicoesPermitidas)) ? [] : [])) {
+    // Apenas verifica se o novoStatus é um valor conhecido
+    $todosStatus = array_unique(array_merge(
+        array_keys($transicoesPermitidas),
+        ...array_values($transicoesPermitidas)
+    ));
+    if (!in_array($novoStatus, $todosStatus)) {
+        echo json_encode(['status' => 'nok', 'mensagem' => 'Status inválido.']);
+        exit;
+    }
 }
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
@@ -55,6 +73,12 @@ try {
 
     $statusAnterior = $pedido['status_atual'];
     $nomeProjeto    = $pedido['nome_projeto'];
+
+    // Valida se a transição de status é permitida
+    $proximosPermitidos = $transicoesPermitidas[$statusAnterior] ?? [];
+    if (!in_array($novoStatus, $proximosPermitidos)) {
+        throw new Exception("Transição inválida: não é possível mudar de \"{$statusAnterior}\" para \"{$novoStatus}\".");
+    }
     $clienteEmail   = $pedido['cliente_email'];
 
     // Se o status não mudou, não faz nada
