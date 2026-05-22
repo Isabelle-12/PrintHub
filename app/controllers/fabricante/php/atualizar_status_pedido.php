@@ -89,6 +89,8 @@ try {
 
     // 2. Atualiza o status no pedido — registra data_atualizacao automaticamente via ON UPDATE
     // Quando NEGADO, salva a observação também em motivo_recusa para exibição ao cliente
+    $obsGravada = $observacao ?: null;
+
     if ($novoStatus === 'NEGADO' && empty($obsGravada)) {
         throw new Exception('O motivo da recusa é obrigatório ao negar um pedido.');
     }
@@ -108,7 +110,6 @@ try {
     $stmtUpdate->close();
 
     // 3. Registra no histórico de status com data/hora da atualização
-    $obsGravada = $observacao ?: null;
     $stmtHist = $conexao->prepare(
         "INSERT INTO historico_status_pedido (pedido_id, status_anterior, status_novo, alterado_por, observacao, data_hora)
          VALUES (?, ?, ?, ?, ?, NOW())"
