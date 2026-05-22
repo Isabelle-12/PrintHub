@@ -88,10 +88,19 @@ try {
     }
 
     // 2. Atualiza o status no pedido — registra data_atualizacao automaticamente via ON UPDATE
+    // Quando NEGADO, salva a observação também em motivo_recusa para exibição ao cliente
+    if ($novoStatus === 'NEGADO' && empty($obsGravada)) {
+        throw new Exception('O motivo da recusa é obrigatório ao negar um pedido.');
+    }
+
+    $motivoRecusa = ($novoStatus === 'NEGADO') ? $obsGravada : null;
+
     $stmtUpdate = $conexao->prepare(
-        "UPDATE pedidos SET status = ?, data_atualizacao = NOW() WHERE id = ? AND maker_id = ?"
+        "UPDATE pedidos SET status = ?, data_atualizacao = NOW(),
+         motivo_recusa = COALESCE(?, motivo_recusa)
+         WHERE id = ? AND maker_id = ?"
     );
-    $stmtUpdate->bind_param('sii', $novoStatus, $pedidoId, $makerId);
+    $stmtUpdate->bind_param('ssii', $novoStatus, $motivoRecusa, $pedidoId, $makerId);
     $stmtUpdate->execute();
     if ($stmtUpdate->affected_rows === 0) {
         throw new Exception('Nenhuma alteração realizada.');

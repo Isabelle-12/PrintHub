@@ -202,6 +202,19 @@ async function abrirModal(id) {
     // ── Histórico
     carregarHistorico(id);
 
+    // Atualiza label da observação conforme status selecionado
+    document.getElementById('mg-novo-status').addEventListener('change', function () {
+        const label = document.getElementById('mg-obs-label');
+        const area  = document.getElementById('mg-observacao');
+        if (this.value === 'NEGADO') {
+            label.innerHTML = 'Motivo da Recusa <span style="color:#dc2626;font-weight:700">*</span> <span style="font-weight:400;color:var(--pm)">(obrigatório)</span>';
+            area.placeholder = 'Descreva o motivo da recusa para informar o cliente...';
+        } else {
+            label.innerHTML = 'Observação <span style="font-weight:400;color:var(--pm)">(opcional)</span>';
+            area.placeholder = 'Ex: Pedido confirmado, previsão de entrega em 5 dias...';
+        }
+    });
+
     new bootstrap.Modal(document.getElementById('modalGerenciar')).show();
 }
 
@@ -306,6 +319,13 @@ async function salvarStatus() {
     const permitidos = TRANSICOES[pedido?.status] || [];
     if (!permitidos.includes(novoStatus)) {
         mostrarToast('Transição de status não permitida.', true);
+        return;
+    }
+
+    // CA3 PBI14: quando NEGADO, justificativa é obrigatória
+    if (novoStatus === 'NEGADO' && !observacao) {
+        mostrarToast('Informe o motivo da recusa para negar o pedido.', true);
+        document.getElementById('mg-observacao').focus();
         return;
     }
 
