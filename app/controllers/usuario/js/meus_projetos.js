@@ -1,4 +1,3 @@
-
 const BASE_URL = '/Printly/';
 
 function montarUrlCapa(caminho) {
@@ -581,5 +580,19 @@ async function excluirProjeto(pedidoId) {
     }
 }
 
-function abrirChat(pedidoId)     { window.location.href = `index.php?rota=chat&pedido_id=${pedidoId}`; }
-function abrirFeedback(pedidoId) { window.location.href = `index.php?rota=feedback&pedido_id=${pedidoId}`; }
+// abrirChat já é definido globalmente pelo chat.js (PBI 19) - função stub mantida só por segurança
+if (typeof window.abrirChat === 'undefined') {
+    window.abrirChat = function(pedidoId) {
+        console.warn('chat.js não carregado para o pedido', pedidoId);
+    };
+}
+
+// PBI 20 - ALTERADO: rota antiga "feedback" não existia. Agora redireciona para listagem de fabricantes com parâmetro para abrir o modal de portfólio do maker daquele pedido, onde o formulário de feedback já está implementado
+function abrirFeedback(pedidoId) {
+    const projeto = todosProjetos.find(p => p.id == Number(pedidoId));
+    if (!projeto || !projeto.maker_id) {
+        alert('Maker deste pedido não foi encontrado.');
+        return;
+    }
+    window.location.href = `index.php?rota=listagem-maker&abrir_portfolio=${projeto.maker_id}`;
+}

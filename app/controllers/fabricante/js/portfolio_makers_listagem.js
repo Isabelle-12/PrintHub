@@ -613,3 +613,13 @@ function mostrarMensagemFiltro(texto, tipo) {
     box.className = 'mensagem-filtro mensagem-' + tipo;
     box.textContent = texto;
 }
+
+/* ───── PBI 20 - ADICIONADO: detecta ?abrir_portfolio=X na URL e abre o modal automaticamente ───── */
+// usado quando o cliente clica em "Avaliar" no card de pedido concluído em Meus Projetos
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const makerId = params.get('abrir_portfolio');
+    if (makerId) {
+        setTimeout(() => abrirPortfolio(parseInt(makerId)), 800);
+    }
+});
